@@ -3,11 +3,7 @@
 import sys
 import antlr
 
-version = sys.version.split()[0]
-if version < '2.2.1':
-    False = 0
-if version < '2.3':
-    True = not False
+
 ### header action >>> 
 import stringtemplate3
 from stringtemplate3.language.ChunkToken import ChunkToken
@@ -464,7 +460,7 @@ class Lexer(antlr.CharScanner) :
                         _saveIndex = self.text.length()
                         self.match('\n')
                         self.text.setLength(_saveIndex)
-                        newline();
+                        self.newline()
                     elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True):
                         pass
                     else:
@@ -490,7 +486,7 @@ class Lexer(antlr.CharScanner) :
                                     
                                 self.match('\n')
                                 self.newline()
-                                atLeft = Frue
+                                atLeft = True
                             elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True):
                                 pass
                                 self.matchNot(antlr.EOF_CHAR)

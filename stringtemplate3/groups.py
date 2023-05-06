@@ -660,7 +660,7 @@ class StringTemplateGroup(object):
             parser = GroupParser.Parser(lexer)
             parser.group(self)
             # sys.stderr.write("read group\n" + str(self))
-        except "foo" as e: # FIXME: Exception, e:
+        except Exception as e:
             name = "<unknown>"
             if self.name:
                 name = self.name
