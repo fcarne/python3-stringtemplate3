@@ -1,11 +1,9 @@
 ### $ANTLR 2.7.7 (2006-11-01): "action.g" -> "ActionParser.py"$
 ### import antlr and other modules ..
-import sys
-import antlr
+from stringtemplate3 import antlr
 
 
 ### header action >>> 
-from stringtemplate3.language.StringTemplateToken import StringTemplateToken
 import stringtemplate3
 ### header action <<< 
 ### preamble action>>>
@@ -13,7 +11,6 @@ import stringtemplate3
 ### preamble action <<<
 
 ### import antlr.Token 
-from antlr import Token
 ### >>>The Known Token Types <<<
 SKIP                = antlr.SKIP
 INVALID_TYPE        = antlr.INVALID_TYPE

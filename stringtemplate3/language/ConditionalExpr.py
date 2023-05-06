@@ -1,5 +1,5 @@
 
-import antlr
+from stringtemplate3 import antlr
 
 from stringtemplate3.language import ASTExpr
 from stringtemplate3.language import ActionEvaluator

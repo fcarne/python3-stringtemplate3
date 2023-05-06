@@ -1,7 +1,7 @@
 ### $ANTLR 2.7.7 (2006-11-01): "group.g" -> "GroupParser.py"$
 ### import antlr and other modules ..
 import sys
-import antlr
+from stringtemplate3 import antlr
 
 
 ### header action >>> 
@@ -14,7 +14,6 @@ import traceback
 ### preamble action <<<
 
 ### import antlr.Token 
-from antlr import Token
 ### >>>The Known Token Types <<<
 SKIP                = antlr.SKIP
 INVALID_TYPE        = antlr.INVALID_TYPE

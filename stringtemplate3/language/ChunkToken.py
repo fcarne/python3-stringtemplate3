@@ -1,5 +1,5 @@
 
-import antlr
+from stringtemplate3 import antlr
 from stringtemplate3.utils import deprecated
 
 class ChunkToken(antlr.CommonToken):

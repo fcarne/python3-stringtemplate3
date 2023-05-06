@@ -15,5 +15,3 @@ from stringtemplate3.templates import *
 from stringtemplate3.groups import *
 from stringtemplate3.interfaces import *
 from stringtemplate3.grouploaders import *
-
-

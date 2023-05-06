@@ -1,14 +1,10 @@
 ### $ANTLR 2.7.7 (2006-11-01): "template.g" -> "DefaultTemplateLexer.py"$
 ### import antlr and other modules ..
-import sys
-import antlr
+from stringtemplate3 import antlr
 
 
 ### header action >>> 
-import stringtemplate3
 from stringtemplate3.language.ChunkToken import ChunkToken
-from stringtemplate3.language.StringRef import StringRef
-from stringtemplate3.language.NewlineRef import NewlineRef
 ### header action <<< 
 ### preamble action >>> 
 
@@ -18,7 +14,6 @@ literals = {}
 
 
 ### import antlr.Token 
-from antlr import Token
 ### >>>The Known Token Types <<<
 SKIP                = antlr.SKIP
 INVALID_TYPE        = antlr.INVALID_TYPE
@@ -1121,7 +1116,7 @@ _tokenSet_11 = antlr.BitSet(mk_tokenSet_11())
 ### __main__ header action >>> 
 if __name__ == '__main__' :
     import sys
-    import antlr
+    from stringtemplate3 import antlr
     from . import DefaultTemplateLexer
     
     ### create lexer - shall read from stdin

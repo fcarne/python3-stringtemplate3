@@ -1,7 +1,6 @@
 ### $ANTLR 2.7.7 (2006-11-01): "interface.g" -> "InterfaceLexer.py"$
 ### import antlr and other modules ..
-import sys
-import antlr
+from stringtemplate3 import antlr
 
 
 ### header action >>> 
@@ -35,9 +34,7 @@ import antlr
 
 
 import sys
-import traceback
 
-from stringtemplate3.language.FormalArgument import FormalArgument
 ### header action <<< 
 ### preamble action >>> 
 
@@ -49,7 +46,7 @@ literals["optional"] = 7
 
 
 ### import antlr.Token 
-from antlr import Token
+from stringtemplate3.antlr import Token
 ### >>>The Known Token Types <<<
 SKIP                = antlr.SKIP
 INVALID_TYPE        = antlr.INVALID_TYPE
@@ -377,7 +374,7 @@ _tokenSet_0 = antlr.BitSet(mk_tokenSet_0())
 ### __main__ header action >>> 
 if __name__ == '__main__' :
     import sys
-    import antlr
+    from stringtemplate3 import antlr
     from . import InterfaceLexer
     
     ### create lexer - shall read from stdin

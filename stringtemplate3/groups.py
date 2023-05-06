@@ -32,7 +32,7 @@ import imp
 import time
 from io import StringIO
 
-import antlr
+from . import antlr
 
 from stringtemplate3.language import (
     AngleBracketTemplateLexer,

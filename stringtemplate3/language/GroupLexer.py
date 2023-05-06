@@ -1,13 +1,10 @@
 ### $ANTLR 2.7.7 (2006-11-01): "group.g" -> "GroupLexer.py"$
 ### import antlr and other modules ..
-import sys
-import antlr
+from stringtemplate3 import antlr
 
 
 ### header action >>> 
 from .ASTExpr import *
-import stringtemplate3
-import traceback
 ### header action <<< 
 ### preamble action >>> 
 
@@ -20,7 +17,6 @@ literals["implements"] = 7
 
 
 ### import antlr.Token 
-from antlr import Token
 ### >>>The Known Token Types <<<
 SKIP                = antlr.SKIP
 INVALID_TYPE        = antlr.INVALID_TYPE
@@ -655,7 +651,7 @@ _tokenSet_2 = antlr.BitSet(mk_tokenSet_2())
 ### __main__ header action >>> 
 if __name__ == '__main__' :
     import sys
-    import antlr
+    from stringtemplate3 import antlr
     from . import GroupLexer
     
     ### create lexer - shall read from stdin

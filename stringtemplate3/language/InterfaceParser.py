@@ -1,7 +1,7 @@
 ### $ANTLR 2.7.7 (2006-11-01): "interface.g" -> "InterfaceParser.py"$
 ### import antlr and other modules ..
 import sys
-import antlr
+from stringtemplate3 import antlr
 
 
 ### header action >>> 
@@ -44,7 +44,6 @@ from stringtemplate3.language.FormalArgument import FormalArgument
 ### preamble action <<<
 
 ### import antlr.Token 
-from antlr import Token
 ### >>>The Known Token Types <<<
 SKIP                = antlr.SKIP
 INVALID_TYPE        = antlr.INVALID_TYPE

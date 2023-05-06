@@ -1,11 +1,9 @@
 ### $ANTLR 2.7.7 (2006-11-01): "angle.bracket.template.g" -> "AngleBracketTemplateLexer.py"$
 ### import antlr and other modules ..
-import sys
-import antlr
+from stringtemplate3 import antlr
 
 
 ### header action >>> 
-import stringtemplate3
 import stringtemplate3.language.TemplateParser
 from stringtemplate3.language.ChunkToken import ChunkToken
 ### header action <<< 
@@ -17,7 +15,6 @@ literals = {}
 
 
 ### import antlr.Token 
-from antlr import Token
 ### >>>The Known Token Types <<<
 SKIP                = antlr.SKIP
 INVALID_TYPE        = antlr.INVALID_TYPE
@@ -1102,7 +1099,7 @@ _tokenSet_12 = antlr.BitSet(mk_tokenSet_12())
 ### __main__ header action >>> 
 if __name__ == '__main__' :
     import sys
-    import antlr
+    from stringtemplate3 import antlr
     from . import AngleBracketTemplateLexer
     
     ### create lexer - shall read from stdin
