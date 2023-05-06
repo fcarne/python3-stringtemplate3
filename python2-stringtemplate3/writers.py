@@ -197,7 +197,7 @@ class AutoIndentWriter(StringTemplateWriter):
         before spitting out this str.
         """
 
-        assert isinstance(text, str), repr(text)
+        assert isinstance(text, basestring), repr(text)
         
         n = 0
         if wrap is not None:

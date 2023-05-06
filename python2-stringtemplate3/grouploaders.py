@@ -109,7 +109,7 @@ class PathGroupLoader(StringTemplateGroupLoader):
             finally:
                 fr.close()
 
-        except IOError as ioe:
+        except IOError, ioe:
             self.error("can't load group "+groupName, ioe)
 
         return None
@@ -128,7 +128,7 @@ class PathGroupLoader(StringTemplateGroupLoader):
             finally:
                 fr.close()
                 
-        except (IOError, OSError) as ioe:
+        except (IOError, OSError), ioe:
             self.error("can't load interface "+interfaceName, ioe)
 
         return None

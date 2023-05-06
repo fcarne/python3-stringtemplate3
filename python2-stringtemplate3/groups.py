@@ -30,7 +30,7 @@ import sys
 import traceback
 import imp
 import time
-from io import StringIO
+from StringIO import StringIO
 
 import antlr
 
@@ -173,14 +173,14 @@ class StringTemplateGroup(object):
         ## How long before tossing out all templates in seconds.
         #  default: no refreshing from disk
         #
-        self.refreshInterval = sys.maxsize/1000
-        self.lastCheckedDisk = 0
+        self.refreshInterval = sys.maxint/1000
+        self.lastCheckedDisk = 0L
         
         if name is not None:
-            assert isinstance(name, str)
+            assert isinstance(name, basestring)
             self.name = name
 
-            assert rootDir is None or isinstance(rootDir, str)
+            assert rootDir is None or isinstance(rootDir, basestring)
             self.rootDir = rootDir
             self.lastCheckedDisk = time.time()
             StringTemplateGroup.nameToGroupMap[self.name] = self
@@ -222,7 +222,7 @@ class StringTemplateGroup(object):
         return self.defaultTemplateLexerClass
 
     def setTemplateLexerClass(self, lexer):
-        if isinstance(lexer, str):
+        if isinstance(lexer, basestring):
             try:
                 self._templateLexerClass = {
                     'default': DefaultTemplateLexer.Lexer,
@@ -258,7 +258,7 @@ class StringTemplateGroup(object):
         if superGroup is None or isinstance(superGroup, StringTemplateGroup):
             self._superGroup = superGroup
             
-        elif isinstance(superGroup, str):
+        elif isinstance(superGroup, basestring):
             # Called by group parser when ": supergroupname" is found.
             # This method forces the supergroup's lexer to be same as lexer
             # for this (sub) group.
@@ -355,7 +355,7 @@ class StringTemplateGroup(object):
         ST encloses it for error messages.
         """
 
-        assert isinstance(name, str)
+        assert isinstance(name, basestring)
         assert enclosingInstance is None or isinstance(enclosingInstance, StringTemplate)
         assert attributes is None or isinstance(attributes, dict)
 
@@ -371,7 +371,7 @@ class StringTemplateGroup(object):
         return None
 
     def getEmbeddedInstanceOf(self, name, enclosingInstance):
-        assert isinstance(name, str)
+        assert isinstance(name, basestring)
         assert enclosingInstance is None or isinstance(enclosingInstance, StringTemplate)
 
         st = None
@@ -402,7 +402,7 @@ class StringTemplateGroup(object):
     #
     #  If I find a template in a super group, copy an instance down here
     def lookupTemplate(self, name, enclosingInstance=None):
-        assert isinstance(name, str)
+        assert isinstance(name, basestring)
         assert enclosingInstance is None or isinstance(enclosingInstance, StringTemplate)
 
         if name.startswith('super.'):
@@ -467,7 +467,7 @@ class StringTemplateGroup(object):
 
 
     def loadTemplate(self, name, src):
-        if isinstance(src, str):
+        if isinstance(src, basestring):
             template = None
             try:
                 br = open(src, 'r')
@@ -477,7 +477,7 @@ class StringTemplateGroup(object):
                     br.close()
 
             # FIXME: eek, that's ugly
-            except Exception as e:
+            except Exception, e:
                 raise
             
             return template
@@ -519,13 +519,13 @@ class StringTemplateGroup(object):
             try:
                 try:
                     template = self.loadTemplate(name, br)
-                except IOError as ioe:
+                except IOError, ioe:
                     self.error("Problem reading template file: "+fileName, ioe)
 
             finally:
                 try:
                     br.close()
-                except IOError as ioe2:
+                except IOError, ioe2:
                     self.error('Cannot close template file: ' + pathName, ioe2)
 
             return template
@@ -642,7 +642,7 @@ class StringTemplateGroup(object):
     ## Get the ST for 'name' in this group only
     #
     def getTemplateDefinition(self, name):
-        if name in self.templates:
+        if self.templates.has_key(name):
             return self.templates[name]
 
     ## Is there *any* definition for template 'name' in this template
@@ -660,7 +660,7 @@ class StringTemplateGroup(object):
             parser = GroupParser.Parser(lexer)
             parser.group(self)
             # sys.stderr.write("read group\n" + str(self))
-        except "foo" as e: # FIXME: Exception, e:
+        except "foo", e: # FIXME: Exception, e:
             name = "<unknown>"
             if self.name:
                 name = self.name
@@ -725,7 +725,7 @@ class StringTemplateGroup(object):
         if self.userSpecifiedWriter:
             try:
                 stw = self.userSpecifiedWriter(w)
-            except RuntimeError as e: #FIXME Exception, e:
+            except RuntimeError, e: #FIXME Exception, e:
                 self.error('problems getting StringTemplateWriter', e)
 
         if not stw:
@@ -757,7 +757,7 @@ class StringTemplateGroup(object):
             # no renderers; consult super group
             return self.superGroup.getAttributeRenderer(attributeClassType)
 
-        if attributeClassType in self.attributeRenderers:
+        if self.attributeRenderers.has_key(attributeClassType):
             return self.attributeRenderers[attributeClassType]
 
         elif self.superGroup is not None:
@@ -772,7 +772,7 @@ class StringTemplateGroup(object):
                 return None
             return self.superGroup.getMap(name)
         m = None
-        if name in self.maps:
+        if self.maps.has_key(name):
             m = self.maps[name]
         if (not m) and self.superGroup:
             m = self.superGroup.getMap(name)
@@ -816,7 +816,7 @@ class StringTemplateGroup(object):
             traceback.print_exc()
             
     def getTemplateNames(self):
-        return list(self.templates.keys())
+        return self.templates.keys()
 
 
     def emitDebugStartStopStrings(self, emit):
@@ -850,12 +850,12 @@ class StringTemplateGroup(object):
     def toString(self, showTemplatePatterns=True):
         buf = StringIO()
         buf.write('group ' + str(self.name) + ';\n')
-        sortedNames = list(self.templates.keys())
+        sortedNames = self.templates.keys()
         sortedNames.sort()
         for tname in sortedNames:
             st = self.templates[tname]
             if st != StringTemplateGroup.NOT_FOUND_ST:
-                args = list(st.formalArguments.keys())
+                args = st.formalArguments.keys()
                 args.sort()
                 buf.write(str(tname) + '(' + ",".join(args) + ')')
                 if showTemplatePatterns:

@@ -1,5 +1,5 @@
 
-from io import StringIO
+from StringIO import StringIO
 import antlr
 
 from stringtemplate3.utils import deprecated
@@ -17,7 +17,7 @@ class IllegalStateException(Exception):
 
 
 def isiterable(o):
-    if isinstance(o, (str, stringtemplate3.StringTemplate)):
+    if isinstance(o, (basestring, stringtemplate3.StringTemplate)):
         # don't consider strings and templates as iterables
         return False
     
@@ -35,7 +35,7 @@ def convertAnyCollectionToList(o):
     elif isinstance(o, tuple) or isinstance(o, set):
         list_ = list(o)
     elif isinstance(o, dict):
-        list_ = list(o.values())
+        list_ = o.values()
     elif isinstance(o, CatList):
         list_ = []
         for item in o.lists():
@@ -52,7 +52,7 @@ def convertAnythingToList(o):
     elif isinstance(o, tuple) or isinstance(o, set):
         list_ = list(o)
     elif isinstance(o, dict):
-        list_ = list(o.values())
+        list_ = o.values()
     elif isinstance(o, CatList):
         list_ = []
         for item in o.lists():
@@ -161,7 +161,7 @@ class ASTExpr(Expr):
         try:
             # eval and write out tree
             n = evaluator.action(self.exprTree)
-        except antlr.RecognitionException as re:
+        except antlr.RecognitionException, re:
             this.error('can\'t evaluate tree: ' + self.exprTree.toStringList(),
                        re)
         out.popIndentation()
@@ -194,7 +194,7 @@ class ASTExpr(Expr):
             self.formatString = self.evaluateExpression(this, formatAST)
 
         if self.options is not None:
-            for option in list(self.options.keys()):
+            for option in self.options.keys():
                 if option not in self.supportedOptions:
                     this.warning("ignoring unsupported option: "+option)
                     
@@ -361,7 +361,7 @@ class ASTExpr(Expr):
                 # if exactly 1 arg or anonymous, give that the value of
                 # "it" as a convenience like they said
                 # $list:template(arg=it)$
-                argNames = list(formalArgs.keys())
+                argNames = formalArgs.keys()
                 soleArgName = argNames[0]
                 argumentContext[soleArgName] = ithValue
 
@@ -390,10 +390,10 @@ class ASTExpr(Expr):
         # property method.
         elif isinstance(o, dict):
             if propertyName == 'keys':
-                value = list(o.keys())
+                value = o.keys()
 
             elif propertyName == 'values':
-                value = list(o.values())
+                value = o.values()
 
             else:
                 value = o.get(propertyName, None)
@@ -411,7 +411,7 @@ class ASTExpr(Expr):
         elif isinstance(o, stringtemplate3.StringTemplate):
             attributes = o.attributes
             if attributes:
-                if propertyName in attributes: # prevent KeyError...
+                if attributes.has_key(propertyName): # prevent KeyError...
                     value = attributes[propertyName]
                 else:
                     value = None
@@ -427,17 +427,17 @@ class ASTExpr(Expr):
                 methodName = 'is' + methodSuffix
                 try:
                     m = getattr(o, methodName)
-                except AttributeError as ae:
+                except AttributeError, ae:
                     # try for a visible field
                     try:
                         try:
                             return getattr(o, propertyName)
-                        except AttributeError as ae2:
+                        except AttributeError, ae2:
                             this.error('Can\'t get property ' + propertyName +
                                        ' using method get/is' + methodSuffix +
                                        ' or direct field access from ' +
                                        o.__class__.__name__ + ' instance', ae2)
-                    except AttributeError as ae:
+                    except AttributeError, ae:
                         this.error('Class ' + o.__class__.__name__ +
                                    ' has no such attribute: ' + propertyName +
                                    ' in template context ' +
@@ -446,7 +446,7 @@ class ASTExpr(Expr):
             if m is not None:
                 try:
                     value = m()
-                except Exception as e:
+                except Exception, e:
                     this.error('Can\'t get property ' + propertyName +
                                ' using method get/is' + methodSuffix +
                                ' or direct field access from ' +
@@ -489,7 +489,7 @@ class ASTExpr(Expr):
         elif b is None:
             return a
 
-        return str(a) + str(b)
+        return unicode(a) + unicode(b)
     
     ## Call a string template with args and return result.  Do not convert
     #  to a string yet.  It may need attributes that will be available after
@@ -579,7 +579,7 @@ class ASTExpr(Expr):
             if isiterable(o):
                 if isinstance(o, dict):
                     # for mapping we want to iterate over the values
-                    lst = list(o.values())
+                    lst = o.values()
                 else:
                     lst = o
 
@@ -602,7 +602,7 @@ class ASTExpr(Expr):
                 if renderer is not None:
                     v = renderer.toString(o, self.formatString)
                 else:
-                    v = str(o)
+                    v = unicode(o)
 
                 if self.wrapString is not None:
                     n = out.write(v, self.wrapString)
@@ -611,7 +611,7 @@ class ASTExpr(Expr):
                     
                 return n
             
-        except IOError as io:
+        except IOError, io:
             this.error('problem writing object: ' + o, io)
         return n
 
@@ -638,7 +638,7 @@ class ASTExpr(Expr):
             try:
                 evaluator.action(expr) # eval tree
 
-            except antlr.RecognitionException as re:
+            except antlr.RecognitionException, re:
                 this.error(
                     "can't evaluate tree: "+self.exprTree.toStringList(), re
                     )
@@ -688,7 +688,7 @@ class ASTExpr(Expr):
             ac = eval_.argList(argumentsAST, this, this.argumentContext)
             this.argumentContext = ac
 
-        except antlr.RecognitionException as re:
+        except antlr.RecognitionException, re:
             this.error('can\'t evaluate tree: ' + argumentsAST.toStringList(),
                        re)
 
@@ -749,7 +749,7 @@ class ASTExpr(Expr):
         if attribute is None:
             yield None
 
-        elif isinstance(attribute, str):
+        elif isinstance(attribute, basestring):
             # don't iterate over string
             yield attribute
 
@@ -787,7 +787,7 @@ class ASTExpr(Expr):
         if isinstance(attribute, (dict, list)):
             i = len(attribute)
 
-        elif isinstance(attribute, str):
+        elif isinstance(attribute, basestring):
             # treat strings as atoms
             i = 1
 

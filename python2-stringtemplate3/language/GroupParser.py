@@ -9,7 +9,7 @@ if version < '2.2.1':
 if version < '2.3':
     True = not False
 ### header action >>> 
-from .ASTExpr import *
+from ASTExpr import *
 import stringtemplate3
 import traceback
 ### header action <<< 
@@ -157,7 +157,7 @@ class Parser(antlr.LLkParser):
                 
             self.match(EOF_TYPE)
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_0)
@@ -282,7 +282,7 @@ class Parser(antlr.LLkParser):
                 raise antlr.NoViableAltException(self.LT(1), self.getFilename())
             
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_1)
@@ -307,7 +307,7 @@ class Parser(antlr.LLkParser):
             else:
                g.defineMap(name.getText(), m)
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_1)
@@ -329,7 +329,7 @@ class Parser(antlr.LLkParser):
                     break
                 
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_2)
@@ -379,7 +379,7 @@ class Parser(antlr.LLkParser):
             
             st.defineFormalArgument(name.getText(), defaultValue)
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_3)
@@ -394,7 +394,7 @@ class Parser(antlr.LLkParser):
             self.mapPairs(mapping)
             self.match(RBRACK)
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_1)
@@ -439,7 +439,7 @@ class Parser(antlr.LLkParser):
                     raise antlr.NoViableAltException(self.LT(1), self.getFilename())
                 
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_4)
@@ -458,7 +458,7 @@ class Parser(antlr.LLkParser):
             v=self.keyValue()
             mapping[key.getText()] = v
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_5)
@@ -475,7 +475,7 @@ class Parser(antlr.LLkParser):
             v=self.keyValue()
             mapping[stringtemplate3.language.ASTExpr.DEFAULT_MAP_VALUE_NAME] = v
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_4)
@@ -519,7 +519,7 @@ class Parser(antlr.LLkParser):
                     raise antlr.NoViableAltException(self.LT(1), self.getFilename())
                 
         
-        except antlr.RecognitionException as ex:
+        except antlr.RecognitionException, ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_5)
@@ -563,42 +563,42 @@ _tokenNames = [
 ### generate bit set
 def mk_tokenSet_0(): 
     ### var1
-    data = [ 2, 0]
+    data = [ 2L, 0L]
     return data
 _tokenSet_0 = antlr.BitSet(mk_tokenSet_0())
 
 ### generate bit set
 def mk_tokenSet_1(): 
     ### var1
-    data = [ 1058, 0]
+    data = [ 1058L, 0L]
     return data
 _tokenSet_1 = antlr.BitSet(mk_tokenSet_1())
 
 ### generate bit set
 def mk_tokenSet_2(): 
     ### var1
-    data = [ 8192, 0]
+    data = [ 8192L, 0L]
     return data
 _tokenSet_2 = antlr.BitSet(mk_tokenSet_2())
 
 ### generate bit set
 def mk_tokenSet_3(): 
     ### var1
-    data = [ 8448, 0]
+    data = [ 8448L, 0L]
     return data
 _tokenSet_3 = antlr.BitSet(mk_tokenSet_3())
 
 ### generate bit set
 def mk_tokenSet_4(): 
     ### var1
-    data = [ 1048576, 0]
+    data = [ 1048576L, 0L]
     return data
 _tokenSet_4 = antlr.BitSet(mk_tokenSet_4())
 
 ### generate bit set
 def mk_tokenSet_5(): 
     ### var1
-    data = [ 1048832, 0]
+    data = [ 1048832L, 0L]
     return data
 _tokenSet_5 = antlr.BitSet(mk_tokenSet_5())
     

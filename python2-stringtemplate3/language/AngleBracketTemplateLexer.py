@@ -1,4 +1,4 @@
-### $ANTLR 2.7.7 (2006-11-01): "template.g" -> "DefaultTemplateLexer.py"$
+### $ANTLR 2.7.7 (2006-11-01): "angle.bracket.template.g" -> "AngleBracketTemplateLexer.py"$
 ### import antlr and other modules ..
 import sys
 import antlr
@@ -10,9 +10,8 @@ if version < '2.3':
     True = not False
 ### header action >>> 
 import stringtemplate3
+import stringtemplate3.language.TemplateParser
 from stringtemplate3.language.ChunkToken import ChunkToken
-from stringtemplate3.language.StringRef import StringRef
-from stringtemplate3.language.NewlineRef import NewlineRef
 ### header action <<< 
 ### preamble action >>> 
 
@@ -53,38 +52,38 @@ COMMENT = 23
 
 
 ###/** Break up an input text stream into chunks of either plain text
-### *  or template actions in "$...$".  Treat IF and ENDIF tokens
+### *  or template actions in "<...>".  Treat IF and ENDIF tokens
 ### *  specially.
 ### */
 class Lexer(antlr.CharScanner) :
     ### user action >>>
     def reportError(self, e):
-       self.this.error("$...$ chunk lexer error", e)
+       self.this.error("<...> chunk lexer error", e)
     
     def upcomingELSE(self, i):
-       return self.LA(i) == '$' and \
+       return self.LA(i) == '<' and \
               self.LA(i+1) == 'e' and \
               self.LA(i+2) == 'l' and \
               self.LA(i+3) == 's' and \
               self.LA(i+4) == 'e' and \
-              self.LA(i+5) == '$'
+              self.LA(i+5) == '>'
     
     def upcomingENDIF(self, i):
-       return self.LA(i) == '$' and \
+       return self.LA(i) == '<' and \
               self.LA(i+1) == 'e' and \
               self.LA(i+2) == 'n' and \
               self.LA(i+3) == 'd' and \
               self.LA(i+4) == 'i' and \
               self.LA(i+5) == 'f' and \
-              self.LA(i+6) == '$'
+              self.LA(i+6) == '>'
     
     def upcomingAtEND(self, i):
-       return self.LA(i) == '$' and \
+       return self.LA(i) == '<' and \
               self.LA(i+1) == '@' and \
               self.LA(i+2) == 'e' and \
               self.LA(i+3) == 'n' and \
               self.LA(i+4) == 'd' and \
-              self.LA(i+5) == '$'
+              self.LA(i+5) == '>'
     
     def upcomingNewline(self, i):
        return (self.LA(i) == '\r' and
@@ -113,11 +112,11 @@ class Lexer(antlr.CharScanner) :
                             la1 = self.LA(1)
                             if False:
                                 pass
-                            elif la1 and la1 in '\n\r':
+                            elif la1 and la1 in u'\n\r':
                                 pass
                                 self.mNEWLINE(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '$':
+                            elif la1 and la1 in u'<':
                                 pass
                                 self.mACTION(True)
                                 theRetToken = self._returnToken
@@ -136,10 +135,10 @@ class Lexer(antlr.CharScanner) :
                             ### return token to caller
                             return self._returnToken
                         ### handle lexical errors ....
-                        except antlr.RecognitionException as e:
+                        except antlr.RecognitionException, e:
                             raise antlr.TokenStreamRecognitionException(e)
                     ### handle char stream errors ...
-                    except antlr.CharStreamException as cse:
+                    except antlr.CharStreamException,cse:
                         if isinstance(cse, antlr.CharStreamIOException):
                             raise antlr.TokenStreamIOException(cse.io)
                         else:
@@ -157,31 +156,37 @@ class Lexer(antlr.CharScanner) :
         if not  self.LA(1) != '\r' and self.LA(1) != '\n' :
             raise antlr.SemanticException(" self.LA(1) != '\\r' and self.LA(1) != '\\n' ")
         pass
-        _cnt11= 0
+        _cnt5= 0
         while True:
             loopStartIndex = self.text.length()
             col = self.getColumn()
-            if (self.LA(1)=='\\') and (self.LA(2)=='$'):
+            if (self.LA(1)==u'\\') and (self.LA(2)==u'<'):
                 pass
                 _saveIndex = self.text.length()
                 self.match('\\')
                 self.text.setLength(_saveIndex)
-                self.match('$')
-            elif (self.LA(1)=='\\') and (self.LA(2)=='\\') and (True) and (True) and (True) and (True) and (True):
+                self.match('<')
+            elif (self.LA(1)==u'\\') and (self.LA(2)==u'>') and (True) and (True) and (True) and (True) and (True):
+                pass
+                _saveIndex = self.text.length()
+                self.match('\\')
+                self.text.setLength(_saveIndex)
+                self.match('>')
+            elif (self.LA(1)==u'\\') and (self.LA(2)==u'\\') and (True) and (True) and (True) and (True) and (True):
                 pass
                 _saveIndex = self.text.length()
                 self.match('\\')
                 self.text.setLength(_saveIndex)
                 self.match('\\')
-            elif (self.LA(1)=='\\') and (_tokenSet_1.member(self.LA(2))) and (True) and (True) and (True) and (True) and (True):
+            elif (self.LA(1)==u'\\') and (_tokenSet_1.member(self.LA(2))) and (True) and (True) and (True) and (True) and (True):
                 pass
                 self.match('\\')
-                self.matchNot('$')
-            elif (self.LA(1)=='\t' or self.LA(1)==' ') and (True) and (True) and (True) and (True) and (True) and (True):
+                self.match(_tokenSet_1)
+            elif (self.LA(1)==u'\t' or self.LA(1)==u' ') and (True) and (True) and (True) and (True) and (True) and (True):
                 pass
                 self.mINDENT(True)
                 ind = self._returnToken
-                if col == 1 and self.LA(1) == '$':
+                if col == 1 and self.LA(1) == '<':
                    # store indent in ASTExpr not in a literal
                    self.currentIndent = ind.getText()
                    # reset length to wack text
@@ -194,11 +199,10 @@ class Lexer(antlr.CharScanner) :
             else:
                 break
             
-            _cnt11 += 1
-        if _cnt11 < 1:
+            _cnt5 += 1
+        if _cnt5 < 1:
             self.raise_NoViableAlt(self.LA(1))
-        if not len(self.text.getString(_begin)):
-           _ttype = SKIP # pure indent?
+        if not len(self.text.getString(_begin)): _ttype = SKIP
         self.set_return_token(_createToken, _token, _ttype, _begin)
     
     def mINDENT(self, _createToken):    
@@ -208,19 +212,19 @@ class Lexer(antlr.CharScanner) :
         _ttype = INDENT
         _saveIndex = 0
         pass
-        _cnt72= 0
+        _cnt8= 0
         while True:
-            if (self.LA(1)==' ') and (True) and (True) and (True) and (True) and (True) and (True):
+            if (self.LA(1)==u' ') and (True) and (True) and (True) and (True) and (True) and (True):
                 pass
                 self.match(' ')
-            elif (self.LA(1)=='\t') and (True) and (True) and (True) and (True) and (True) and (True):
+            elif (self.LA(1)==u'\t') and (True) and (True) and (True) and (True) and (True) and (True):
                 pass
                 self.match('\t')
             else:
                 break
             
-            _cnt72 += 1
-        if _cnt72 < 1:
+            _cnt8 += 1
+        if _cnt8 < 1:
             self.raise_NoViableAlt(self.LA(1))
         self.set_return_token(_createToken, _token, _ttype, _begin)
     
@@ -231,30 +235,20 @@ class Lexer(antlr.CharScanner) :
         _ttype = NEWLINE
         _saveIndex = 0
         pass
-        self.mNL(False)
+        la1 = self.LA(1)
+        if False:
+            pass
+        elif la1 and la1 in u'\r':
+            pass
+            self.match('\r')
+        elif la1 and la1 in u'\n':
+            pass
+        else:
+                self.raise_NoViableAlt(self.LA(1))
+            
+        self.match('\n')
         self.newline()
         self.currentIndent = None
-        self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mNL(self, _createToken):    
-        _ttype = 0
-        _token = None
-        _begin = self.text.length()
-        _ttype = NL
-        _saveIndex = 0
-        if (self.LA(1)=='\r') and (self.LA(2)=='\n') and (True) and (True) and (True) and (True) and (True):
-            pass
-            self.match('\r')
-            self.match('\n')
-        elif (self.LA(1)=='\r') and (True) and (True) and (True) and (True) and (True) and (True):
-            pass
-            self.match('\r')
-        elif (self.LA(1)=='\n'):
-            pass
-            self.match('\n')
-        else:
-            self.raise_NoViableAlt(self.LA(1))
-        
         self.set_return_token(_createToken, _token, _ttype, _begin)
     
     def mACTION(self, _createToken):    
@@ -264,44 +258,44 @@ class Lexer(antlr.CharScanner) :
         _ttype = ACTION
         _saveIndex = 0
         startCol = self.getColumn()
-        if (self.LA(1)=='$') and (self.LA(2)=='\\') and (_tokenSet_2.member(self.LA(3))) and (_tokenSet_3.member(self.LA(4))) and (True) and (True) and (True):
+        if (self.LA(1)==u'<') and (self.LA(2)==u'\\') and (_tokenSet_2.member(self.LA(3))) and (_tokenSet_3.member(self.LA(4))) and (True) and (True) and (True):
             pass
-            buf = ""
-            uc = "\000"
+            buf = u""
+            uc = u"\000"
             _saveIndex = self.text.length()
-            self.match('$')
+            self.match('<')
             self.text.setLength(_saveIndex)
-            _cnt15= 0
+            _cnt13= 0
             while True:
-                if (self.LA(1)=='\\'):
+                if (self.LA(1)==u'\\'):
                     pass
                     uc=self.mESC_CHAR(False)
                     buf += uc
                 else:
                     break
                 
-                _cnt15 += 1
-            if _cnt15 < 1:
+                _cnt13 += 1
+            if _cnt13 < 1:
                 self.raise_NoViableAlt(self.LA(1))
             _saveIndex = self.text.length()
-            self.match('$')
+            self.match('>')
             self.text.setLength(_saveIndex)
             self.text.setLength(_begin) ; self.text.append(buf)
             _ttype = LITERAL
-        elif (self.LA(1)=='$') and (self.LA(2)=='!') and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and ((self.LA(4) >= '\u0001' and self.LA(4) <= '\ufffe')) and (True) and (True) and (True):
+        elif (self.LA(1)==u'<') and (self.LA(2)==u'!') and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and ((self.LA(4) >= u'\u0001' and self.LA(4) <= u'\ufffe')) and (True) and (True) and (True):
             pass
             self.mCOMMENT(False)
             _ttype = SKIP
-        elif (self.LA(1)=='$') and (_tokenSet_1.member(self.LA(2))) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and (True) and (True) and (True) and (True):
+        elif (self.LA(1)==u'<') and (_tokenSet_4.member(self.LA(2))) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and (True) and (True) and (True) and (True):
             pass
-            if (self.LA(1)=='$') and (self.LA(2)=='i') and (self.LA(3)=='f') and (self.LA(4)==' ' or self.LA(4)=='(') and (_tokenSet_4.member(self.LA(5))) and ((self.LA(6) >= '\u0001' and self.LA(6) <= '\ufffe')) and ((self.LA(7) >= '\u0001' and self.LA(7) <= '\ufffe')):
+            if (self.LA(1)==u'<') and (self.LA(2)==u'i') and (self.LA(3)==u'f') and (self.LA(4)==u' ' or self.LA(4)==u'(') and (_tokenSet_5.member(self.LA(5))) and ((self.LA(6) >= u'\u0001' and self.LA(6) <= u'\ufffe')) and ((self.LA(7) >= u'\u0001' and self.LA(7) <= u'\ufffe')):
                 pass
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('<')
                 self.text.setLength(_saveIndex)
                 self.match("if")
                 while True:
-                    if (self.LA(1)==' '):
+                    if (self.LA(1)==u' '):
                         pass
                         _saveIndex = self.text.length()
                         self.match(' ')
@@ -313,10 +307,10 @@ class Lexer(antlr.CharScanner) :
                 self.mIF_EXPR(False)
                 self.match(")")
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('>')
                 self.text.setLength(_saveIndex)
                 _ttype = IF
-                if (self.LA(1)=='\n' or self.LA(1)=='\r'):
+                if (self.LA(1)==u'\n' or self.LA(1)==u'\r'):
                     pass
                     _saveIndex = self.text.length()
                     self.mNL(False)
@@ -325,61 +319,17 @@ class Lexer(antlr.CharScanner) :
                 else: ## <m4>
                         pass
                     
-            elif (self.LA(1)=='$') and (self.LA(2)=='e') and (self.LA(3)=='l') and (self.LA(4)=='s') and (self.LA(5)=='e') and (self.LA(6)=='i') and (self.LA(7)=='f'):
+            elif (self.LA(1)==u'<') and (self.LA(2)==u'e') and (self.LA(3)==u'n') and (self.LA(4)==u'd') and (self.LA(5)==u'i') and (self.LA(6)==u'f') and (self.LA(7)==u'>'):
                 pass
                 _saveIndex = self.text.length()
-                self.match('$')
-                self.text.setLength(_saveIndex)
-                self.match("elseif")
-                while True:
-                    if (self.LA(1)==' '):
-                        pass
-                        _saveIndex = self.text.length()
-                        self.match(' ')
-                        self.text.setLength(_saveIndex)
-                    else:
-                        break
-                    
-                self.match("(")
-                self.mIF_EXPR(False)
-                self.match(")")
-                _saveIndex = self.text.length()
-                self.match('$')
-                self.text.setLength(_saveIndex)
-                _ttype = ELSEIF
-                if (self.LA(1)=='\n' or self.LA(1)=='\r'):
-                    pass
-                    la1 = self.LA(1)
-                    if False:
-                        pass
-                    elif la1 and la1 in '\r':
-                        pass
-                        _saveIndex = self.text.length()
-                        self.match('\r')
-                        self.text.setLength(_saveIndex)
-                    elif la1 and la1 in '\n':
-                        pass
-                    else:
-                            self.raise_NoViableAlt(self.LA(1))
-                        
-                    _saveIndex = self.text.length()
-                    self.match('\n')
-                    self.text.setLength(_saveIndex)
-                    self.newline()
-                else: ## <m4>
-                        pass
-                    
-            elif (self.LA(1)=='$') and (self.LA(2)=='e') and (self.LA(3)=='n') and (self.LA(4)=='d') and (self.LA(5)=='i') and (self.LA(6)=='f') and (self.LA(7)=='$'):
-                pass
-                _saveIndex = self.text.length()
-                self.match('$')
+                self.match('<')
                 self.text.setLength(_saveIndex)
                 self.match("endif")
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('>')
                 self.text.setLength(_saveIndex)
                 _ttype = ENDIF
-                if ((self.LA(1)=='\n' or self.LA(1)=='\r') and ( startCol == 1 )):
+                if ((self.LA(1)==u'\n' or self.LA(1)==u'\r') and (startCol==1)):
                     pass
                     _saveIndex = self.text.length()
                     self.mNL(False)
@@ -388,17 +338,17 @@ class Lexer(antlr.CharScanner) :
                 else: ## <m4>
                         pass
                     
-            elif (self.LA(1)=='$') and (self.LA(2)=='e') and (self.LA(3)=='l') and (self.LA(4)=='s') and (self.LA(5)=='e') and (self.LA(6)=='$') and (True):
+            elif (self.LA(1)==u'<') and (self.LA(2)==u'e') and (self.LA(3)==u'l') and (self.LA(4)==u's') and (self.LA(5)==u'e') and (self.LA(6)==u'>') and (True):
                 pass
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('<')
                 self.text.setLength(_saveIndex)
                 self.match("else")
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('>')
                 self.text.setLength(_saveIndex)
                 _ttype = ELSE
-                if (self.LA(1)=='\n' or self.LA(1)=='\r'):
+                if (self.LA(1)==u'\n' or self.LA(1)==u'\r'):
                     pass
                     _saveIndex = self.text.length()
                     self.mNL(False)
@@ -407,56 +357,56 @@ class Lexer(antlr.CharScanner) :
                 else: ## <m4>
                         pass
                     
-            elif (self.LA(1)=='$') and (self.LA(2)=='@') and (_tokenSet_5.member(self.LA(3))) and ((self.LA(4) >= '\u0001' and self.LA(4) <= '\ufffe')) and ((self.LA(5) >= '\u0001' and self.LA(5) <= '\ufffe')) and ((self.LA(6) >= '\u0001' and self.LA(6) <= '\ufffe')) and (True):
+            elif (self.LA(1)==u'<') and (self.LA(2)==u'@') and (_tokenSet_6.member(self.LA(3))) and ((self.LA(4) >= u'\u0001' and self.LA(4) <= u'\ufffe')) and ((self.LA(5) >= u'\u0001' and self.LA(5) <= u'\ufffe')) and ((self.LA(6) >= u'\u0001' and self.LA(6) <= u'\ufffe')) and (True):
                 pass
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('<')
                 self.text.setLength(_saveIndex)
                 _saveIndex = self.text.length()
                 self.match('@')
                 self.text.setLength(_saveIndex)
-                _cnt28= 0
+                _cnt22= 0
                 while True:
-                    if (_tokenSet_5.member(self.LA(1))):
+                    if (_tokenSet_6.member(self.LA(1))):
                         pass
-                        self.match(_tokenSet_5)
+                        self.match(_tokenSet_6)
                     else:
                         break
                     
-                    _cnt28 += 1
-                if _cnt28 < 1:
+                    _cnt22 += 1
+                if _cnt22 < 1:
                     self.raise_NoViableAlt(self.LA(1))
                 la1 = self.LA(1)
                 if False:
                     pass
-                elif la1 and la1 in '(':
+                elif la1 and la1 in u'(':
                     pass
                     _saveIndex = self.text.length()
                     self.match("()")
                     self.text.setLength(_saveIndex)
                     _saveIndex = self.text.length()
-                    self.match('$')
+                    self.match('>')
                     self.text.setLength(_saveIndex)
                     _ttype = REGION_REF
-                elif la1 and la1 in '$':
+                elif la1 and la1 in u'>':
                     pass
                     _saveIndex = self.text.length()
-                    self.match('$')
+                    self.match('>')
                     self.text.setLength(_saveIndex)
                     _ttype = REGION_DEF
                     t = self.text.getString(_begin)
                     self.text.setLength(_begin) ; self.text.append(t+"::=")
-                    if (self.LA(1)=='\n' or self.LA(1)=='\r') and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and (True) and (True) and (True) and (True):
+                    if (self.LA(1)==u'\n' or self.LA(1)==u'\r') and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and (True) and (True) and (True) and (True):
                         pass
                         la1 = self.LA(1)
                         if False:
                             pass
-                        elif la1 and la1 in '\r':
+                        elif la1 and la1 in u'\r':
                             pass
                             _saveIndex = self.text.length()
                             self.match('\r')
                             self.text.setLength(_saveIndex)
-                        elif la1 and la1 in '\n':
+                        elif la1 and la1 in u'\n':
                             pass
                         else:
                                 self.raise_NoViableAlt(self.LA(1))
@@ -464,34 +414,34 @@ class Lexer(antlr.CharScanner) :
                         _saveIndex = self.text.length()
                         self.match('\n')
                         self.text.setLength(_saveIndex)
-                        newline();
-                    elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True):
+                        self.newline()
+                    elif ((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and (True) and (True) and (True) and (True) and (True):
                         pass
                     else:
                         self.raise_NoViableAlt(self.LA(1))
                     
                     atLeft = False
-                    _cnt35= 0
+                    _cnt29= 0
                     while True:
-                        if (((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True) and (not (self.upcomingAtEND(1) or (self.upcomingNewline(1) and self.upcomingAtEND(2))))):
+                        if (((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and (True) and (True) and (True) and (True) and (True) and (not (self.upcomingAtEND(1) or (self.upcomingNewline(1) and self.upcomingAtEND(2))))):
                             pass
-                            if (self.LA(1)=='\n' or self.LA(1)=='\r') and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True):
+                            if (self.LA(1)==u'\n' or self.LA(1)==u'\r') and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and (True) and (True) and (True) and (True) and (True):
                                 pass
                                 la1 = self.LA(1)
                                 if False:
                                     pass
-                                elif la1 and la1 in '\r':
+                                elif la1 and la1 in u'\r':
                                     pass
                                     self.match('\r')
-                                elif la1 and la1 in '\n':
+                                elif la1 and la1 in u'\n':
                                     pass
                                 else:
                                         self.raise_NoViableAlt(self.LA(1))
                                     
                                 self.match('\n')
                                 self.newline()
-                                atLeft = Frue
-                            elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True):
+                                atLeft = True
+                            elif ((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and (True) and (True) and (True) and (True) and (True):
                                 pass
                                 self.matchNot(antlr.EOF_CHAR)
                                 atLeft = False
@@ -501,20 +451,20 @@ class Lexer(antlr.CharScanner) :
                         else:
                             break
                         
-                        _cnt35 += 1
-                    if _cnt35 < 1:
+                        _cnt29 += 1
+                    if _cnt29 < 1:
                         self.raise_NoViableAlt(self.LA(1))
-                    if (self.LA(1)=='\n' or self.LA(1)=='\r') and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True):
+                    if (self.LA(1)==u'\n' or self.LA(1)==u'\r') and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and (True) and (True) and (True) and (True) and (True):
                         pass
                         la1 = self.LA(1)
                         if False:
                             pass
-                        elif la1 and la1 in '\r':
+                        elif la1 and la1 in u'\r':
                             pass
                             _saveIndex = self.text.length()
                             self.match('\r')
                             self.text.setLength(_saveIndex)
-                        elif la1 and la1 in '\n':
+                        elif la1 and la1 in u'\n':
                             pass
                         else:
                                 self.raise_NoViableAlt(self.LA(1))
@@ -522,36 +472,36 @@ class Lexer(antlr.CharScanner) :
                         _saveIndex = self.text.length()
                         self.match('\n')
                         self.text.setLength(_saveIndex)
-                        self.newline()()
+                        self.newline()
                         atLeft = True
-                    elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and (True) and (True) and (True) and (True) and (True) and (True):
+                    elif ((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and (True) and (True) and (True) and (True) and (True) and (True):
                         pass
                     else:
                         self.raise_NoViableAlt(self.LA(1))
                     
-                    if (self.LA(1)=='$') and (self.LA(2)=='@'):
+                    if (self.LA(1)==u'<') and (self.LA(2)==u'@'):
                         pass
                         _saveIndex = self.text.length()
-                        self.match("$@end$")
+                        self.match("<@end>")
                         self.text.setLength(_saveIndex)
-                    elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and (True):
+                    elif ((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and (True):
                         pass
                         self.matchNot(antlr.EOF_CHAR)
-                        self.this.error("missing region "+t+" $@end$ tag")
+                        self.this.error("missing region "+t+" <@end> tag")
                     else:
                         self.raise_NoViableAlt(self.LA(1))
                     
-                    if ((self.LA(1)=='\n' or self.LA(1)=='\r') and (atLeft)):
+                    if ((self.LA(1)==u'\n' or self.LA(1)==u'\r') and (atLeft)):
                         pass
                         la1 = self.LA(1)
                         if False:
                             pass
-                        elif la1 and la1 in '\r':
+                        elif la1 and la1 in u'\r':
                             pass
                             _saveIndex = self.text.length()
                             self.match('\r')
                             self.text.setLength(_saveIndex)
-                        elif la1 and la1 in '\n':
+                        elif la1 and la1 in u'\n':
                             pass
                         else:
                                 self.raise_NoViableAlt(self.LA(1))
@@ -566,27 +516,27 @@ class Lexer(antlr.CharScanner) :
                 else:
                         self.raise_NoViableAlt(self.LA(1))
                     
-            elif (self.LA(1)=='$') and (_tokenSet_1.member(self.LA(2))) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and (True) and (True) and (True) and (True):
+            elif (self.LA(1)==u'<') and (_tokenSet_4.member(self.LA(2))) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and (True) and (True) and (True) and (True):
                 pass
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('<')
                 self.text.setLength(_saveIndex)
                 self.mEXPR(False)
                 _saveIndex = self.text.length()
-                self.match('$')
+                self.match('>')
                 self.text.setLength(_saveIndex)
             else:
                 self.raise_NoViableAlt(self.LA(1))
             
             t = ChunkToken(_ttype, self.text.getString(_begin), self.currentIndent)
-            _token = t;
+            _token = t
         else:
             self.raise_NoViableAlt(self.LA(1))
         
         self.set_return_token(_createToken, _token, _ttype, _begin)
     
     def mESC_CHAR(self, _createToken):    
-        uc='\\u0000'
+        uc='\u0000'
         _ttype = 0
         _token = None
         _begin = self.text.length()
@@ -596,31 +546,31 @@ class Lexer(antlr.CharScanner) :
         b = None
         c = None
         d = None
-        if (self.LA(1)=='\\') and (self.LA(2)=='n'):
+        if (self.LA(1)==u'\\') and (self.LA(2)==u'n'):
             pass
             _saveIndex = self.text.length()
             self.match("\\n")
             self.text.setLength(_saveIndex)
             uc = '\n'
-        elif (self.LA(1)=='\\') and (self.LA(2)=='r'):
+        elif (self.LA(1)==u'\\') and (self.LA(2)==u'r'):
             pass
             _saveIndex = self.text.length()
             self.match("\\r")
             self.text.setLength(_saveIndex)
             uc = '\r'
-        elif (self.LA(1)=='\\') and (self.LA(2)=='t'):
+        elif (self.LA(1)==u'\\') and (self.LA(2)==u't'):
             pass
             _saveIndex = self.text.length()
             self.match("\\t")
             self.text.setLength(_saveIndex)
             uc = '\t'
-        elif (self.LA(1)=='\\') and (self.LA(2)==' '):
+        elif (self.LA(1)==u'\\') and (self.LA(2)==u' '):
             pass
             _saveIndex = self.text.length()
             self.match("\\ ")
             self.text.setLength(_saveIndex)
             uc = ' '
-        elif (self.LA(1)=='\\') and (self.LA(2)=='u'):
+        elif (self.LA(1)==u'\\') and (self.LA(2)==u'u'):
             pass
             _saveIndex = self.text.length()
             self.match("\\u")
@@ -641,7 +591,7 @@ class Lexer(antlr.CharScanner) :
             self.mHEX(True)
             self.text.setLength(_saveIndex)
             d = self._returnToken
-            uc = chr(int(a.getText()+b.getText()+c.getText()+d.getText(), 16))
+            uc = unichr(int(a.getText()+b.getText()+c.getText()+d.getText(), 16))
         else:
             self.raise_NoViableAlt(self.LA(1))
         
@@ -656,23 +606,23 @@ class Lexer(antlr.CharScanner) :
         _saveIndex = 0
         startCol = self.getColumn()
         pass
-        self.match("$!")
+        self.match("<!")
         while True:
             ###  nongreedy exit test
-            if ((self.LA(1)=='!') and (self.LA(2)=='$') and (True) and (True) and (True) and (True) and (True)):
+            if ((self.LA(1)==u'!') and (self.LA(2)==u'>') and (True) and (True) and (True) and (True) and (True)):
                 break
-            if (self.LA(1)=='\n' or self.LA(1)=='\r') and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and (True) and (True) and (True) and (True):
+            if (self.LA(1)==u'\n' or self.LA(1)==u'\r') and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and (True) and (True) and (True) and (True):
                 pass
                 self.mNL(False)
                 self.newline()
-            elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and (True) and (True) and (True) and (True):
+            elif ((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and (True) and (True) and (True) and (True):
                 pass
                 self.matchNot(antlr.EOF_CHAR)
             else:
                 break
             
-        self.match("!$")
-        if ((self.LA(1)=='\n' or self.LA(1)=='\r') and ( startCol == 1 )):
+        self.match("!>")
+        if ((self.LA(1)==u'\n' or self.LA(1)==u'\r') and ( startCol == 1 )):
             pass
             self.mNL(False)
             self.newline()
@@ -688,45 +638,66 @@ class Lexer(antlr.CharScanner) :
         _ttype = IF_EXPR
         _saveIndex = 0
         pass
-        _cnt60= 0
+        _cnt54= 0
         while True:
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in '\\':
+            elif la1 and la1 in u'\\':
                 pass
                 self.mESC(False)
-            elif la1 and la1 in '\n\r':
+            elif la1 and la1 in u'\n\r':
                 pass
                 la1 = self.LA(1)
                 if False:
                     pass
-                elif la1 and la1 in '\r':
+                elif la1 and la1 in u'\r':
                     pass
                     self.match('\r')
-                elif la1 and la1 in '\n':
+                elif la1 and la1 in u'\n':
                     pass
                 else:
                         self.raise_NoViableAlt(self.LA(1))
                     
                 self.match('\n')
                 self.newline()
-            elif la1 and la1 in '{':
+            elif la1 and la1 in u'{':
                 pass
                 self.mSUBTEMPLATE(False)
-            elif la1 and la1 in '(':
+            elif la1 and la1 in u'(':
                 pass
                 self.mNESTED_PARENS(False)
             else:
-                if (_tokenSet_6.member(self.LA(1))):
+                if (_tokenSet_7.member(self.LA(1))):
                     pass
                     self.matchNot(')')
                 else:
                     break
                 
-            _cnt60 += 1
-        if _cnt60 < 1:
+            _cnt54 += 1
+        if _cnt54 < 1:
             self.raise_NoViableAlt(self.LA(1))
+        self.set_return_token(_createToken, _token, _ttype, _begin)
+    
+    def mNL(self, _createToken):    
+        _ttype = 0
+        _token = None
+        _begin = self.text.length()
+        _ttype = NL
+        _saveIndex = 0
+        if (self.LA(1)==u'\r') and (self.LA(2)==u'\n') and (True) and (True) and (True) and (True) and (True):
+            pass
+            self.match('\r')
+            self.match('\n')
+        elif (self.LA(1)==u'\r') and (True) and (True) and (True) and (True) and (True) and (True):
+            pass
+            self.match('\r')
+        elif (self.LA(1)==u'\n'):
+            pass
+            self.match('\n')
+        else:
+            self.raise_NoViableAlt(self.LA(1))
+        
         self.set_return_token(_createToken, _token, _ttype, _begin)
     
     def mEXPR(self, _createToken):    
@@ -736,75 +707,75 @@ class Lexer(antlr.CharScanner) :
         _ttype = EXPR
         _saveIndex = 0
         pass
-        _cnt48= 0
+        _cnt42= 0
         while True:
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in '\\':
+            elif la1 and la1 in u'\\':
                 pass
                 self.mESC(False)
-            elif la1 and la1 in '\n\r':
+            elif la1 and la1 in u'\n\r':
                 pass
                 self.mNL(False)
                 self.newline()
-            elif la1 and la1 in '{':
+            elif la1 and la1 in u'{':
                 pass
                 self.mSUBTEMPLATE(False)
             else:
-                if (self.LA(1)=='+' or self.LA(1)=='=') and (self.LA(2)=='"' or self.LA(2)=='<'):
+                if (self.LA(1)==u'+' or self.LA(1)==u'=') and (self.LA(2)==u'"' or self.LA(2)==u'<'):
                     pass
                     la1 = self.LA(1)
                     if False:
                         pass
-                    elif la1 and la1 in '=':
+                    elif la1 and la1 in u'=':
                         pass
                         self.match('=')
-                    elif la1 and la1 in '+':
+                    elif la1 and la1 in u'+':
                         pass
                         self.match('+')
                     else:
                             self.raise_NoViableAlt(self.LA(1))
                         
                     self.mTEMPLATE(False)
-                elif (self.LA(1)=='+' or self.LA(1)=='=') and (self.LA(2)=='{'):
+                elif (self.LA(1)==u'+' or self.LA(1)==u'=') and (self.LA(2)==u'{'):
                     pass
                     la1 = self.LA(1)
                     if False:
                         pass
-                    elif la1 and la1 in '=':
+                    elif la1 and la1 in u'=':
                         pass
                         self.match('=')
-                    elif la1 and la1 in '+':
+                    elif la1 and la1 in u'+':
                         pass
                         self.match('+')
                     else:
                             self.raise_NoViableAlt(self.LA(1))
                         
                     self.mSUBTEMPLATE(False)
-                elif (self.LA(1)=='+' or self.LA(1)=='=') and (_tokenSet_7.member(self.LA(2))):
+                elif (self.LA(1)==u'+' or self.LA(1)==u'=') and (_tokenSet_8.member(self.LA(2))):
                     pass
                     la1 = self.LA(1)
                     if False:
                         pass
-                    elif la1 and la1 in '=':
+                    elif la1 and la1 in u'=':
                         pass
                         self.match('=')
-                    elif la1 and la1 in '+':
+                    elif la1 and la1 in u'+':
                         pass
                         self.match('+')
                     else:
                             self.raise_NoViableAlt(self.LA(1))
                         
-                    self.match(_tokenSet_7)
-                elif (_tokenSet_8.member(self.LA(1))):
+                    self.match(_tokenSet_8)
+                elif (_tokenSet_9.member(self.LA(1))):
                     pass
-                    self.matchNot('$')
+                    self.matchNot('>')
                 else:
                     break
                 
-            _cnt48 += 1
-        if _cnt48 < 1:
+            _cnt42 += 1
+        if _cnt42 < 1:
             self.raise_NoViableAlt(self.LA(1))
         self.set_return_token(_createToken, _token, _ttype, _begin)
     
@@ -831,14 +802,14 @@ class Lexer(antlr.CharScanner) :
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in '{':
+            elif la1 and la1 in u'{':
                 pass
                 self.mSUBTEMPLATE(False)
-            elif la1 and la1 in '\\':
+            elif la1 and la1 in u'\\':
                 pass
                 self.mESC(False)
             else:
-                if (_tokenSet_9.member(self.LA(1))):
+                if (_tokenSet_10.member(self.LA(1))):
                     pass
                     self.matchNot('}')
                 else:
@@ -856,34 +827,34 @@ class Lexer(antlr.CharScanner) :
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in '"':
+        elif la1 and la1 in u'"':
             pass
             self.match('"')
             while True:
-                if (self.LA(1)=='\\'):
+                if (self.LA(1)==u'\\'):
                     pass
                     self.mESC(False)
-                elif (_tokenSet_10.member(self.LA(1))):
+                elif (_tokenSet_11.member(self.LA(1))):
                     pass
                     self.matchNot('"')
                 else:
                     break
                 
             self.match('"')
-        elif la1 and la1 in '<':
+        elif la1 and la1 in u'<':
             pass
             self.match("<<")
-            if (self.LA(1)=='\n' or self.LA(1)=='\r') and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and ((self.LA(4) >= '\u0001' and self.LA(4) <= '\ufffe')) and (True) and (True) and (True):
+            if (self.LA(1)==u'\n' or self.LA(1)==u'\r') and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and ((self.LA(4) >= u'\u0001' and self.LA(4) <= u'\ufffe')) and (True) and (True) and (True):
                 pass
                 la1 = self.LA(1)
                 if False:
                     pass
-                elif la1 and la1 in '\r':
+                elif la1 and la1 in u'\r':
                     pass
                     _saveIndex = self.text.length()
                     self.match('\r')
                     self.text.setLength(_saveIndex)
-                elif la1 and la1 in '\n':
+                elif la1 and la1 in u'\n':
                     pass
                 else:
                         self.raise_NoViableAlt(self.LA(1))
@@ -892,16 +863,16 @@ class Lexer(antlr.CharScanner) :
                 self.match('\n')
                 self.text.setLength(_saveIndex)
                 self.newline()
-            elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and (True) and (True) and (True) and (True):
+            elif ((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and (True) and (True) and (True) and (True):
                 pass
             else:
                 self.raise_NoViableAlt(self.LA(1))
             
             while True:
                 ###  nongreedy exit test
-                if ((self.LA(1)=='>') and (self.LA(2)=='>') and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and (True) and (True) and (True) and (True)):
+                if ((self.LA(1)==u'>') and (self.LA(2)==u'>') and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and (True) and (True) and (True) and (True)):
                     break
-                if ((self.LA(1)=='\r') and (self.LA(2)=='\n') and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and ((self.LA(4) >= '\u0001' and self.LA(4) <= '\ufffe')) and ((self.LA(5) >= '\u0001' and self.LA(5) <= '\ufffe')) and (True) and (True) and ( self.LA(3) == '>' and self.LA(4) == '>' )):
+                if ((self.LA(1)==u'\r') and (self.LA(2)==u'\n') and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and ((self.LA(4) >= u'\u0001' and self.LA(4) <= u'\ufffe')) and ((self.LA(5) >= u'\u0001' and self.LA(5) <= u'\ufffe')) and (True) and (True) and ( self.LA(3) == '>' and self.LA(4) == '>' )):
                     pass
                     _saveIndex = self.text.length()
                     self.match('\r')
@@ -910,28 +881,28 @@ class Lexer(antlr.CharScanner) :
                     self.match('\n')
                     self.text.setLength(_saveIndex)
                     self.newline()
-                elif ((self.LA(1)=='\n') and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and ((self.LA(4) >= '\u0001' and self.LA(4) <= '\ufffe')) and (True) and (True) and (True) and ( self.LA(2) == '>' and self.LA(3) == '>' )):
+                elif ((self.LA(1)==u'\n') and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and ((self.LA(4) >= u'\u0001' and self.LA(4) <= u'\ufffe')) and (True) and (True) and (True) and ( self.LA(2) == '>' and self.LA(3) == '>' )):
                     pass
                     _saveIndex = self.text.length()
                     self.match('\n')
                     self.text.setLength(_saveIndex)
                     self.newline()
-                elif (self.LA(1)=='\n' or self.LA(1)=='\r') and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and ((self.LA(4) >= '\u0001' and self.LA(4) <= '\ufffe')) and (True) and (True) and (True):
+                elif (self.LA(1)==u'\n' or self.LA(1)==u'\r') and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and ((self.LA(4) >= u'\u0001' and self.LA(4) <= u'\ufffe')) and (True) and (True) and (True):
                     pass
                     la1 = self.LA(1)
                     if False:
                         pass
-                    elif la1 and la1 in '\r':
+                    elif la1 and la1 in u'\r':
                         pass
                         self.match('\r')
-                    elif la1 and la1 in '\n':
+                    elif la1 and la1 in u'\n':
                         pass
                     else:
                             self.raise_NoViableAlt(self.LA(1))
                         
                     self.match('\n')
                     self.newline()
-                elif ((self.LA(1) >= '\u0001' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0001' and self.LA(2) <= '\ufffe')) and ((self.LA(3) >= '\u0001' and self.LA(3) <= '\ufffe')) and ((self.LA(4) >= '\u0001' and self.LA(4) <= '\ufffe')) and (True) and (True) and (True):
+                elif ((self.LA(1) >= u'\u0001' and self.LA(1) <= u'\ufffe')) and ((self.LA(2) >= u'\u0001' and self.LA(2) <= u'\ufffe')) and ((self.LA(3) >= u'\u0001' and self.LA(3) <= u'\ufffe')) and ((self.LA(4) >= u'\u0001' and self.LA(4) <= u'\ufffe')) and (True) and (True) and (True):
                     pass
                     self.matchNot(antlr.EOF_CHAR)
                 else:
@@ -951,26 +922,26 @@ class Lexer(antlr.CharScanner) :
         _saveIndex = 0
         pass
         self.match('(')
-        _cnt69= 0
+        _cnt63= 0
         while True:
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in '(':
+            elif la1 and la1 in u'(':
                 pass
                 self.mNESTED_PARENS(False)
-            elif la1 and la1 in '\\':
+            elif la1 and la1 in u'\\':
                 pass
                 self.mESC(False)
             else:
-                if (_tokenSet_11.member(self.LA(1))):
+                if (_tokenSet_12.member(self.LA(1))):
                     pass
                     self.matchNot(')')
                 else:
                     break
                 
-            _cnt69 += 1
-        if _cnt69 < 1:
+            _cnt63 += 1
+        if _cnt63 < 1:
             self.raise_NoViableAlt(self.LA(1))
         self.match(')')
         self.set_return_token(_createToken, _token, _ttype, _begin)
@@ -984,15 +955,15 @@ class Lexer(antlr.CharScanner) :
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in '0123456789':
+        elif la1 and la1 in u'0123456789':
             pass
-            self.matchRange('0', '9')
-        elif la1 and la1 in 'ABCDEF':
+            self.matchRange(u'0', u'9')
+        elif la1 and la1 in u'ABCDEF':
             pass
-            self.matchRange('A', 'F')
-        elif la1 and la1 in 'abcdef':
+            self.matchRange(u'A', u'F')
+        elif la1 and la1 in u'abcdef':
             pass
-            self.matchRange('a', 'f')
+            self.matchRange(u'a', u'f')
         else:
                 self.raise_NoViableAlt(self.LA(1))
             
@@ -1002,137 +973,147 @@ class Lexer(antlr.CharScanner) :
 
 ### generate bit set
 def mk_tokenSet_0(): 
-    data = [0] * 2048 ### init list
-    data[0] =-68719485954
-    for x in range(1, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-1152921504606856194L
+    for x in xrange(1, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_0 = antlr.BitSet(mk_tokenSet_0())
 
 ### generate bit set
 def mk_tokenSet_1(): 
-    data = [0] * 2048 ### init list
-    data[0] =-68719476738
-    for x in range(1, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-5764607523034234882L
+    for x in xrange(1, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_1 = antlr.BitSet(mk_tokenSet_1())
 
 ### generate bit set
 def mk_tokenSet_2(): 
-    data = [0] * 1025 ### init list
-    data[0] =4294967296
-    data[1] =14707067533131776
+    data = [0L] * 1025 ### init list
+    data[0] =4294967296L
+    data[1] =14707067533131776L
     return data
 _tokenSet_2 = antlr.BitSet(mk_tokenSet_2())
 
 ### generate bit set
 def mk_tokenSet_3(): 
-    data = [0] * 1025 ### init list
-    data[0] =287948969894477824
-    data[1] =541434314878
+    data = [0L] * 1025 ### init list
+    data[0] =4899634919602388992L
+    data[1] =541434314878L
     return data
 _tokenSet_3 = antlr.BitSet(mk_tokenSet_3())
 
 ### generate bit set
 def mk_tokenSet_4(): 
-    data = [0] * 2048 ### init list
-    data[0] =-2199023255554
-    for x in range(1, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-4611686018427387906L
+    for x in xrange(1, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_4 = antlr.BitSet(mk_tokenSet_4())
 
 ### generate bit set
 def mk_tokenSet_5(): 
-    data = [0] * 2048 ### init list
-    data[0] =-1168231104514
-    for x in range(1, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-2199023255554L
+    for x in xrange(1, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_5 = antlr.BitSet(mk_tokenSet_5())
 
 ### generate bit set
 def mk_tokenSet_6(): 
-    data = [0] * 2048 ### init list
-    data[0] =-3298534892546
-    data[1] =-576460752571858945
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-4611687117939015682L
+    for x in xrange(1, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_6 = antlr.BitSet(mk_tokenSet_6())
 
 ### generate bit set
 def mk_tokenSet_7(): 
-    data = [0] * 2048 ### init list
-    data[0] =-1152921521786716162
-    data[1] =-576460752303423489
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-3298534892546L
+    data[1] =-576460752571858945L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_7 = antlr.BitSet(mk_tokenSet_7())
 
 ### generate bit set
 def mk_tokenSet_8(): 
-    data = [0] * 2048 ### init list
-    data[0] =-2305851874026202114
-    data[1] =-576460752571858945
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-1152921521786716162L
+    data[1] =-576460752303423489L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_8 = antlr.BitSet(mk_tokenSet_8())
 
 ### generate bit set
 def mk_tokenSet_9(): 
-    data = [0] * 2048 ### init list
-    data[0] =-2
-    data[1] =-2882303761785552897
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-6917537823734113282L
+    data[1] =-576460752571858945L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_9 = antlr.BitSet(mk_tokenSet_9())
 
 ### generate bit set
 def mk_tokenSet_10(): 
-    data = [0] * 2048 ### init list
-    data[0] =-17179869186
-    data[1] =-268435457
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-2L
+    data[1] =-2882303761785552897L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_10 = antlr.BitSet(mk_tokenSet_10())
 
 ### generate bit set
 def mk_tokenSet_11(): 
-    data = [0] * 2048 ### init list
-    data[0] =-3298534883330
-    data[1] =-268435457
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-17179869186L
+    data[1] =-268435457L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_11 = antlr.BitSet(mk_tokenSet_11())
+
+### generate bit set
+def mk_tokenSet_12(): 
+    data = [0L] * 2048 ### init list
+    data[0] =-3298534883330L
+    data[1] =-268435457L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
+    return data
+_tokenSet_12 = antlr.BitSet(mk_tokenSet_12())
     
 ### __main__ header action >>> 
 if __name__ == '__main__' :
     import sys
     import antlr
-    from . import DefaultTemplateLexer
+    import AngleBracketTemplateLexer
     
     ### create lexer - shall read from stdin
     try:
-        for token in DefaultTemplateLexer.Lexer():
-            print(token)
+        for token in AngleBracketTemplateLexer.Lexer():
+            print token
             
-    except antlr.TokenStreamException as e:
-        print("error: exception caught while lexing: ", e)
+    except antlr.TokenStreamException, e:
+        print "error: exception caught while lexing: ", e
 ### __main__ header action <<< 

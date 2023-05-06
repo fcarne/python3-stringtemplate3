@@ -28,7 +28,7 @@
 
 import sys
 import traceback
-from io import StringIO
+from StringIO import StringIO
 from copy import copy
 
 
@@ -127,7 +127,7 @@ class Aggregate(object):
         # Instead of relying on data hiding, we check the type of the
         # master of this aggregate.
         if isinstance(self.master, StringTemplate):
-            if propName in self.properties:
+            if self.properties.has_key(propName):
                 return self.properties[propName]
             return None
         raise AttributeError
@@ -136,7 +136,7 @@ class Aggregate(object):
         # Instead of relying on data hiding, we check the type of the
         # master of this aggregate.
         if isinstance(self.master, StringTemplate):
-            return propName in self.properties
+            return self.properties.has_key(propName)
         raise AttributeError
 
 
@@ -334,7 +334,7 @@ class StringTemplate(object):
         self.regions = set()
 
         if template is not None:
-            assert isinstance(template, str)
+            assert isinstance(template, basestring)
             self.template = template
 
         if attributes is not None:
@@ -765,14 +765,14 @@ class StringTemplate(object):
 
         # is it here?
         o = None
-        if this.attributes and attribute in this.attributes:
+        if this.attributes and this.attributes.has_key(attribute):
             o = this.attributes[attribute]
             return o
 
         # nope, check argument context in case embedded
         if not o:
             argContext = this.argumentContext
-            if argContext and attribute in argContext:
+            if argContext and argContext.has_key(attribute):
                 o = argContext[attribute]
                 return o
 
@@ -830,7 +830,7 @@ class StringTemplate(object):
             chunkStream.setTokenObjectClass(ChunkToken)
             chunkifier = TemplateParser.Parser(chunkStream)
             chunkifier.template(self)
-        except Exception as e:
+        except Exception, e:
             name = "<unknown>"
             outerName = self.getOutermostName()
             if self.name:
@@ -855,9 +855,9 @@ class StringTemplate(object):
                 else:
                     a = ASTExpr(self, tree, options)
 
-        except antlr.RecognitionException as re:
+        except antlr.RecognitionException, re:
             self.error('Can\'t parse chunk: ' + str(action), re)
-        except antlr.TokenStreamException as tse:
+        except antlr.TokenStreamException, tse:
             self.error('Can\'t parse chunk: ' + str(action), tse)
 
         return a
@@ -958,7 +958,7 @@ class StringTemplate(object):
         return self.formalArguments[name]
 
     def hasFormalArgument(self, name):
-        return name in self.formalArguments
+        return self.formalArguments.has_key(name)
 
     def defineEmptyFormalArgumentList(self):
         self.formalArgumentKeys = []
@@ -967,7 +967,7 @@ class StringTemplate(object):
     def defineFormalArgument(self, names, defaultValue = None):
         if not names:
             return
-        if isinstance(names, str):
+        if isinstance(names, basestring):
             name = names
             if defaultValue:
                 self.numberOfDefaultArgumentValues += 1
@@ -1108,7 +1108,7 @@ class StringTemplate(object):
             if p.attributes:
                 buf.write(", attributes=[")
                 i = 0
-                for attrName in list(p.attributes.keys()):
+                for attrName in p.attributes.keys():
                     if i > 0:
                         buf.write(", ")
                     i += 1
@@ -1155,7 +1155,7 @@ class StringTemplate(object):
 
     def getTemplateHeaderString(self, showAttributes):
         if showAttributes and self.attributes is not None:
-            return self.name + str(list(self.attributes.keys()))
+            return self.name + str(self.attributes.keys())
 
         return self.name
 
@@ -1193,7 +1193,7 @@ class StringTemplate(object):
         # compare, looking for SET BUT NOT REFERENCED ATTRIBUTES
         if not self.attributes:
             return
-        for name in list(self.attributes.keys()):
+        for name in self.attributes.keys():
             if self.referencedAttributes and \
                not name in self.referencedAttributes:
                 self.warning(self.name + ': set but not used: ' + name)
@@ -1256,7 +1256,7 @@ class StringTemplate(object):
         buf.write('attributes=[')
         if self.attributes:
             n = 0
-            for name in list(self.attributes.keys()):
+            for name in self.attributes.keys():
                 if n > 0:
                     buf.write(',')
                 buf.write(name + '=')
@@ -1281,10 +1281,10 @@ class StringTemplate(object):
 
         buf.write('  '*indent)  # indent
         buf.write(self.name)
-        buf.write(str(list(self.attributes.keys()))) # FIXME: errr.. that's correct?
+        buf.write(str(self.attributes.keys())) # FIXME: errr.. that's correct?
         buf.write(":\n")
         if self.attributes is not None:
-            attrNames = list(self.attributes.keys())
+            attrNames = self.attributes.keys()
             for name in attrNames:
                 value = self.attributes[name]
                 if isinstance(value, StringTemplate): # descend
@@ -1297,7 +1297,7 @@ class StringTemplate(object):
                                 buf.write(o.toStructureString(indent+1))
 
                     elif isinstance(value, dict):
-                        for o in list(value.values()):
+                        for o in value.values():
                             if isinstance(o, StringTemplate): # descend
                                 buf.write(o.toStructureString(indent+1))
 
@@ -1324,7 +1324,7 @@ class StringTemplate(object):
         edges = {}
         self.getDependencyGraph(edges, showAttributes)
         # for each source template
-        for src, targetNodes in edges.items():
+        for src, targetNodes in edges.iteritems():
             # for each target template
             for trg in targetNodes:
                 graphST.setAttribute("edges.{src,trg}", src, trg)
@@ -1352,7 +1352,7 @@ class StringTemplate(object):
         
         srcNode = self.getTemplateHeaderString(showAttributes)
         if self.attributes is not None:
-            for name, value in self.attributes.items():
+            for name, value in self.attributes.iteritems():
                 if isinstance(value, StringTemplate):
                     targetNode = value.getTemplateHeaderString(showAttributes)
                     self.putToMultiValuedMap(edges, srcNode, targetNode)
@@ -1367,7 +1367,7 @@ class StringTemplate(object):
                                 o.getDependencyGraph(edges, showAttributes) # descend
 
                     elif isinstance(value, dict):
-                        for o in list(value.values()):
+                        for o in value.values():
                             if isinstance(o, StringTemplate):
                                 targetNode = o.getTemplateHeaderString(showAttributes)
                                 self.putToMultiValuedMap(edges, srcNode, targetNode)
@@ -1411,7 +1411,7 @@ class StringTemplate(object):
             return
         out.write("attributes=[")
         n = 0
-        for name in list(self.attributes.keys()):
+        for name in self.attributes.keys():
             if n > 0:
                 out.write(',')
             value = self.attributes[name]
@@ -1438,12 +1438,12 @@ class StringTemplate(object):
 
     def toString(self, lineWidth=StringTemplateWriter.NO_WRAP):
         # Write the output to a StringIO
-        out = StringIO('')
+        out = StringIO(u'')
         wr = self.group.getStringTemplateWriter(out)
         wr.lineWidth = lineWidth
         try:
             self.write(wr)
-        except IOError as io:
+        except IOError, io:
             self.error("Got IOError writing to writer" + \
                        str(wr.__class__.__name__))
             

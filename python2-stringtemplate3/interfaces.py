@@ -26,7 +26,7 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-from io import StringIO
+from StringIO import StringIO
 
 from stringtemplate3.language import (
     InterfaceLexer, InterfaceParser
@@ -93,7 +93,7 @@ class StringTemplateGroupInterface(object):
             parser = InterfaceParser.Parser(lexer)
             parser.groupInterface(self)
 
-        except RuntimeError as exc: #FIXME:  Exception
+        except RuntimeError, exc: #FIXME:  Exception
             name = self.name or "<unknown>"
             self.error("problem parsing group "+name+": "+str(exc), exc)
 
@@ -111,7 +111,7 @@ class StringTemplateGroupInterface(object):
 
         missing = []
 
-        templates = list(self.templates.items())
+        templates = self.templates.items()
         templates.sort()
         for name, d in templates:
             if not d.optional and not group.isDefined(d.name):
@@ -128,7 +128,7 @@ class StringTemplateGroupInterface(object):
 
         mismatched = []
         
-        templates = list(self.templates.items())
+        templates = self.templates.items()
         templates.sort()
         for name, d in templates:
             if group.isDefined(d.name):
@@ -141,7 +141,7 @@ class StringTemplateGroupInterface(object):
                     ack = True
 
                 if not ack:
-                    for argName in list(formalArgs.keys()):
+                    for argName in formalArgs.keys():
                         if d.formalArgs.get(argName, None) == None:
                             ack = True
                             break
@@ -171,7 +171,7 @@ class StringTemplateGroupInterface(object):
         buf.write("interface ")
         buf.write(self.name)
         buf.write(";\n")
-        templates = list(self.templates.items())
+        templates = self.templates.items()
         templates.sort()
         for name, d in templates:
             buf.write( self.getTemplateSignature(d) )
@@ -190,7 +190,7 @@ class StringTemplateGroupInterface(object):
         buf.write(d.name)
         if d.formalArgs is not None:
             buf.write('(')
-            args = list(d.formalArgs.keys())
+            args = d.formalArgs.keys()
             args.sort()
             buf.write(", ".join(args))
             buf.write(')')

@@ -71,7 +71,7 @@ class ConditionalExpr(ASTExpr):
             # with a False value.
             try:
                 includeSubtemplate = evaluator.ifCondition(cond)
-            except KeyError as ke:
+            except KeyError, ke:
                 includeSubtemplate = False
 
             if includeSubtemplate:
@@ -83,7 +83,7 @@ class ConditionalExpr(ASTExpr):
                 for elseIfClause in self.elseIfSubtemplates:
                     try:
                         includeSubtemplate = evaluator.ifCondition(elseIfClause.expr.exprTree)
-                    except KeyError as ke:
+                    except KeyError, ke:
                         includeSubtemplate = False
                     if includeSubtemplate:
                         n = self.writeSubTemplate(this, out, elseIfClause.st)
@@ -95,7 +95,7 @@ class ConditionalExpr(ASTExpr):
                 # failed
                 n = self.writeSubTemplate(this, out, self.elseSubtemplate)
                         
-        except antlr.RecognitionException as re:
+        except antlr.RecognitionException, re:
             this.error(
                 "can't evaluate tree: " + self.exprTree.toStringList(), re
                 )

@@ -17,15 +17,15 @@ import stringtemplate3
 ### preamble action <<< 
 ### >>>The Literals<<<
 literals = {}
-literals["super"] = 32
-literals["if"] = 8
-literals["first"] = 26
-literals["last"] = 28
-literals["rest"] = 27
-literals["trunc"] = 31
-literals["strip"] = 30
-literals["length"] = 29
-literals["elseif"] = 18
+literals[u"super"] = 32
+literals[u"if"] = 8
+literals[u"first"] = 26
+literals[u"last"] = 28
+literals[u"rest"] = 27
+literals[u"trunc"] = 31
+literals[u"strip"] = 30
+literals[u"length"] = 29
+literals[u"elseif"] = 18
 
 
 ### import antlr.Token 
@@ -99,72 +99,72 @@ class Lexer(antlr.CharScanner) :
                             la1 = self.LA(1)
                             if False:
                                 pass
-                            elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz':
+                            elif la1 and la1 in u'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz':
                                 pass
                                 self.mID(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '0123456789':
+                            elif la1 and la1 in u'0123456789':
                                 pass
                                 self.mINT(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '"':
+                            elif la1 and la1 in u'"':
                                 pass
                                 self.mSTRING(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '{':
+                            elif la1 and la1 in u'{':
                                 pass
                                 self.mANONYMOUS_TEMPLATE(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '[':
+                            elif la1 and la1 in u'[':
                                 pass
                                 self.mLBRACK(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ']':
+                            elif la1 and la1 in u']':
                                 pass
                                 self.mRBRACK(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '(':
+                            elif la1 and la1 in u'(':
                                 pass
                                 self.mLPAREN(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ')':
+                            elif la1 and la1 in u')':
                                 pass
                                 self.mRPAREN(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ',':
+                            elif la1 and la1 in u',':
                                 pass
                                 self.mCOMMA(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '=':
+                            elif la1 and la1 in u'=':
                                 pass
                                 self.mASSIGN(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ':':
+                            elif la1 and la1 in u':':
                                 pass
                                 self.mCOLON(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '+':
+                            elif la1 and la1 in u'+':
                                 pass
                                 self.mPLUS(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ';':
+                            elif la1 and la1 in u';':
                                 pass
                                 self.mSEMI(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '!':
+                            elif la1 and la1 in u'!':
                                 pass
                                 self.mNOT(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '\t\n\r ':
+                            elif la1 and la1 in u'\t\n\r ':
                                 pass
                                 self.mWS(True)
                                 theRetToken = self._returnToken
                             else:
-                                if (self.LA(1)=='.') and (self.LA(2)=='.'):
+                                if (self.LA(1)==u'.') and (self.LA(2)==u'.'):
                                     pass
                                     self.mDOTDOTDOT(True)
                                     theRetToken = self._returnToken
-                                elif (self.LA(1)=='.') and (True):
+                                elif (self.LA(1)==u'.') and (True):
                                     pass
                                     self.mDOT(True)
                                     theRetToken = self._returnToken
@@ -176,10 +176,10 @@ class Lexer(antlr.CharScanner) :
                             ### return token to caller
                             return self._returnToken
                         ### handle lexical errors ....
-                        except antlr.RecognitionException as e:
+                        except antlr.RecognitionException, e:
                             raise antlr.TokenStreamRecognitionException(e)
                     ### handle char stream errors ...
-                    except antlr.CharStreamException as cse:
+                    except antlr.CharStreamException,cse:
                         if isinstance(cse, antlr.CharStreamIOException):
                             raise antlr.TokenStreamIOException(cse.io)
                         else:
@@ -197,13 +197,13 @@ class Lexer(antlr.CharScanner) :
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in 'abcdefghijklmnopqrstuvwxyz':
+        elif la1 and la1 in u'abcdefghijklmnopqrstuvwxyz':
             pass
-            self.matchRange('a', 'z')
-        elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            self.matchRange(u'a', u'z')
+        elif la1 and la1 in u'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
             pass
-            self.matchRange('A', 'Z')
-        elif la1 and la1 in '_':
+            self.matchRange(u'A', u'Z')
+        elif la1 and la1 in u'_':
             pass
             self.match('_')
         else:
@@ -213,19 +213,19 @@ class Lexer(antlr.CharScanner) :
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in 'abcdefghijklmnopqrstuvwxyz':
+            elif la1 and la1 in u'abcdefghijklmnopqrstuvwxyz':
                 pass
-                self.matchRange('a', 'z')
-            elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                self.matchRange(u'a', u'z')
+            elif la1 and la1 in u'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
                 pass
-                self.matchRange('A', 'Z')
-            elif la1 and la1 in '0123456789':
+                self.matchRange(u'A', u'Z')
+            elif la1 and la1 in u'0123456789':
                 pass
-                self.matchRange('0', '9')
-            elif la1 and la1 in '_':
+                self.matchRange(u'0', u'9')
+            elif la1 and la1 in u'_':
                 pass
                 self.match('_')
-            elif la1 and la1 in '/':
+            elif la1 and la1 in u'/':
                 pass
                 self.match('/')
             else:
@@ -244,9 +244,9 @@ class Lexer(antlr.CharScanner) :
         pass
         _cnt63= 0
         while True:
-            if ((self.LA(1) >= '0' and self.LA(1) <= '9')):
+            if ((self.LA(1) >= u'0' and self.LA(1) <= u'9')):
                 pass
-                self.matchRange('0', '9')
+                self.matchRange(u'0', u'9')
             else:
                 break
             
@@ -266,7 +266,7 @@ class Lexer(antlr.CharScanner) :
         self.match('"')
         self.text.setLength(_saveIndex)
         while True:
-            if (self.LA(1)=='\\'):
+            if (self.LA(1)==u'\\'):
                 pass
                 self.mESC_CHAR(False, True)
             elif (_tokenSet_0.member(self.LA(1))):
@@ -295,32 +295,32 @@ class Lexer(antlr.CharScanner) :
         c = '\0'
         pass
         self.match('\\')
-        if (self.LA(1)=='n') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+        if (self.LA(1)==u'n') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
             pass
             self.match('n')
             if not self.inputState.guessing:
                 if doEscape: self.text.setLength(_begin) ; self.text.append("\n")
-        elif (self.LA(1)=='r') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+        elif (self.LA(1)==u'r') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
             pass
             self.match('r')
             if not self.inputState.guessing:
                 if doEscape: self.text.setLength(_begin) ; self.text.append("\r")
-        elif (self.LA(1)=='t') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+        elif (self.LA(1)==u't') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
             pass
             self.match('t')
             if not self.inputState.guessing:
                 if doEscape: self.text.setLength(_begin) ; self.text.append("\t")
-        elif (self.LA(1)=='b') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+        elif (self.LA(1)==u'b') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
             pass
             self.match('b')
             if not self.inputState.guessing:
                 if doEscape: self.text.setLength(_begin) ; self.text.append("\b")
-        elif (self.LA(1)=='f') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+        elif (self.LA(1)==u'f') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
             pass
             self.match('f')
             if not self.inputState.guessing:
                 if doEscape: self.text.setLength(_begin) ; self.text.append("\f")
-        elif ((self.LA(1) >= '\u0003' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+        elif ((self.LA(1) >= u'\u0003' and self.LA(1) <= u'\ufffe')) and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
             pass
             c = self.LA(1)
             self.matchNot(antlr.EOF_CHAR)
@@ -351,19 +351,19 @@ class Lexer(antlr.CharScanner) :
             try:
                 pass
                 self.mTEMPLATE_ARGS(False)
-            except antlr.RecognitionException as pe:
+            except antlr.RecognitionException, pe:
                 synPredMatched70 = False
             self.rewind(_m70)
             self.inputState.guessing -= 1
         if synPredMatched70:
             pass
             args=self.mTEMPLATE_ARGS(False)
-            if (_tokenSet_3.member(self.LA(1))) and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+            if (_tokenSet_3.member(self.LA(1))) and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
                 pass
                 _saveIndex = self.text.length()
                 self.mWS_CHAR(False)
                 self.text.setLength(_saveIndex)
-            elif ((self.LA(1) >= '\u0003' and self.LA(1) <= '\ufffe')) and (True):
+            elif ((self.LA(1) >= u'\u0003' and self.LA(1) <= u'\ufffe')) and (True):
                 pass
             else:
                 self.raise_NoViableAlt(self.LA(1))
@@ -372,28 +372,28 @@ class Lexer(antlr.CharScanner) :
                 # create a special token to track args
                 t = StringTemplateToken(ANONYMOUS_TEMPLATE, self.text.getString(_begin), args)
                 _token = t
-        elif ((self.LA(1) >= '\u0003' and self.LA(1) <= '\ufffe')) and (True):
+        elif ((self.LA(1) >= u'\u0003' and self.LA(1) <= u'\ufffe')) and (True):
             pass
         else:
             self.raise_NoViableAlt(self.LA(1))
         
         while True:
-            if (self.LA(1)=='\\') and (self.LA(2)=='{'):
+            if (self.LA(1)==u'\\') and (self.LA(2)==u'{'):
                 pass
                 _saveIndex = self.text.length()
                 self.match('\\')
                 self.text.setLength(_saveIndex)
                 self.match('{')
-            elif (self.LA(1)=='\\') and (self.LA(2)=='}'):
+            elif (self.LA(1)==u'\\') and (self.LA(2)==u'}'):
                 pass
                 _saveIndex = self.text.length()
                 self.match('\\')
                 self.text.setLength(_saveIndex)
                 self.match('}')
-            elif (self.LA(1)=='\\') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+            elif (self.LA(1)==u'\\') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
                 pass
                 self.mESC_CHAR(False, False)
-            elif (self.LA(1)=='{'):
+            elif (self.LA(1)==u'{'):
                 pass
                 self.mNESTED_ANONYMOUS_TEMPLATE(False)
             elif (_tokenSet_4.member(self.LA(1))):
@@ -423,12 +423,12 @@ class Lexer(antlr.CharScanner) :
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in '\t\n\r ':
+        elif la1 and la1 in u'\t\n\r ':
             pass
             _saveIndex = self.text.length()
             self.mWS_CHAR(False)
             self.text.setLength(_saveIndex)
-        elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz':
+        elif la1 and la1 in u'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz':
             pass
         else:
                 self.raise_NoViableAlt(self.LA(1))
@@ -445,12 +445,12 @@ class Lexer(antlr.CharScanner) :
                 la1 = self.LA(1)
                 if False:
                     pass
-                elif la1 and la1 in '\t\n\r ':
+                elif la1 and la1 in u'\t\n\r ':
                     pass
                     _saveIndex = self.text.length()
                     self.mWS_CHAR(False)
                     self.text.setLength(_saveIndex)
-                elif la1 and la1 in ',':
+                elif la1 and la1 in u',':
                     pass
                 else:
                         self.raise_NoViableAlt(self.LA(1))
@@ -461,12 +461,12 @@ class Lexer(antlr.CharScanner) :
                 la1 = self.LA(1)
                 if False:
                     pass
-                elif la1 and la1 in '\t\n\r ':
+                elif la1 and la1 in u'\t\n\r ':
                     pass
                     _saveIndex = self.text.length()
                     self.mWS_CHAR(False)
                     self.text.setLength(_saveIndex)
-                elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz':
+                elif la1 and la1 in u'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz':
                     pass
                 else:
                         self.raise_NoViableAlt(self.LA(1))
@@ -483,12 +483,12 @@ class Lexer(antlr.CharScanner) :
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in '\t\n\r ':
+        elif la1 and la1 in u'\t\n\r ':
             pass
             _saveIndex = self.text.length()
             self.mWS_CHAR(False)
             self.text.setLength(_saveIndex)
-        elif la1 and la1 in '|':
+        elif la1 and la1 in u'|':
             pass
         else:
                 self.raise_NoViableAlt(self.LA(1))
@@ -508,22 +508,22 @@ class Lexer(antlr.CharScanner) :
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in ' ':
+        elif la1 and la1 in u' ':
             pass
             self.match(' ')
-        elif la1 and la1 in '\t':
+        elif la1 and la1 in u'\t':
             pass
             self.match('\t')
-        elif la1 and la1 in '\n\r':
+        elif la1 and la1 in u'\n\r':
             pass
-            if (self.LA(1)=='\r') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+            if (self.LA(1)==u'\r') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
                 pass
                 self.match('\r')
-            elif (self.LA(1)=='\r') and (self.LA(2)=='\n'):
+            elif (self.LA(1)==u'\r') and (self.LA(2)==u'\n'):
                 pass
                 self.match('\r')
                 self.match('\n')
-            elif (self.LA(1)=='\n'):
+            elif (self.LA(1)==u'\n'):
                 pass
                 self.match('\n')
             else:
@@ -545,22 +545,22 @@ class Lexer(antlr.CharScanner) :
         pass
         self.match('{')
         while True:
-            if (self.LA(1)=='\\') and (self.LA(2)=='{'):
+            if (self.LA(1)==u'\\') and (self.LA(2)==u'{'):
                 pass
                 _saveIndex = self.text.length()
                 self.match('\\')
                 self.text.setLength(_saveIndex)
                 self.match('{')
-            elif (self.LA(1)=='\\') and (self.LA(2)=='}'):
+            elif (self.LA(1)==u'\\') and (self.LA(2)==u'}'):
                 pass
                 _saveIndex = self.text.length()
                 self.match('\\')
                 self.text.setLength(_saveIndex)
                 self.match('}')
-            elif (self.LA(1)=='\\') and ((self.LA(2) >= '\u0003' and self.LA(2) <= '\ufffe')):
+            elif (self.LA(1)==u'\\') and ((self.LA(2) >= u'\u0003' and self.LA(2) <= u'\ufffe')):
                 pass
                 self.mESC_CHAR(False, False)
-            elif (self.LA(1)=='{'):
+            elif (self.LA(1)==u'{'):
                 pass
                 self.mNESTED_ANONYMOUS_TEMPLATE(False)
             elif (_tokenSet_4.member(self.LA(1))):
@@ -702,22 +702,22 @@ class Lexer(antlr.CharScanner) :
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in ' ':
+        elif la1 and la1 in u' ':
             pass
             self.match(' ')
-        elif la1 and la1 in '\t':
+        elif la1 and la1 in u'\t':
             pass
             self.match('\t')
-        elif la1 and la1 in '\n\r':
+        elif la1 and la1 in u'\n\r':
             pass
-            if (self.LA(1)=='\r') and (self.LA(2)=='\n'):
+            if (self.LA(1)==u'\r') and (self.LA(2)==u'\n'):
                 pass
                 self.match('\r')
                 self.match('\n')
-            elif (self.LA(1)=='\r') and (True):
+            elif (self.LA(1)==u'\r') and (True):
                 pass
                 self.match('\r')
-            elif (self.LA(1)=='\n'):
+            elif (self.LA(1)==u'\n'):
                 pass
                 self.match('\n')
             else:
@@ -736,61 +736,61 @@ class Lexer(antlr.CharScanner) :
 
 ### generate bit set
 def mk_tokenSet_0(): 
-    data = [0] * 2048 ### init list
-    data[0] =-17179869192
-    data[1] =-268435457
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-17179869192L
+    data[1] =-268435457L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_0 = antlr.BitSet(mk_tokenSet_0())
 
 ### generate bit set
 def mk_tokenSet_1(): 
-    data = [0] * 1025 ### init list
-    data[0] =4294977024
-    data[1] =576460745995190270
+    data = [0L] * 1025 ### init list
+    data[0] =4294977024L
+    data[1] =576460745995190270L
     return data
 _tokenSet_1 = antlr.BitSet(mk_tokenSet_1())
 
 ### generate bit set
 def mk_tokenSet_2(): 
-    data = [0] * 1025 ### init list
-    data[0] =288107235144377856
-    data[1] =1729382250602037246
+    data = [0L] * 1025 ### init list
+    data[0] =288107235144377856L
+    data[1] =1729382250602037246L
     return data
 _tokenSet_2 = antlr.BitSet(mk_tokenSet_2())
 
 ### generate bit set
 def mk_tokenSet_3(): 
-    data = [0] * 1025 ### init list
-    data[0] =4294977024
+    data = [0L] * 1025 ### init list
+    data[0] =4294977024L
     return data
 _tokenSet_3 = antlr.BitSet(mk_tokenSet_3())
 
 ### generate bit set
 def mk_tokenSet_4(): 
-    data = [0] * 2048 ### init list
-    data[0] =-8
-    data[1] =-2882303761785552897
-    for x in range(2, 1023):
-        data[x] = -1
-    data[1023] =9223372036854775807
+    data = [0L] * 2048 ### init list
+    data[0] =-8L
+    data[1] =-2882303761785552897L
+    for x in xrange(2, 1023):
+        data[x] = -1L
+    data[1023] =9223372036854775807L
     return data
 _tokenSet_4 = antlr.BitSet(mk_tokenSet_4())
 
 ### generate bit set
 def mk_tokenSet_5(): 
-    data = [0] * 1025 ### init list
-    data[0] =17596481021440
+    data = [0L] * 1025 ### init list
+    data[0] =17596481021440L
     return data
 _tokenSet_5 = antlr.BitSet(mk_tokenSet_5())
 
 ### generate bit set
 def mk_tokenSet_6(): 
-    data = [0] * 1025 ### init list
-    data[0] =17596481021440
-    data[1] =576460745995190270
+    data = [0L] * 1025 ### init list
+    data[0] =17596481021440L
+    data[1] =576460745995190270L
     return data
 _tokenSet_6 = antlr.BitSet(mk_tokenSet_6())
     
@@ -798,13 +798,13 @@ _tokenSet_6 = antlr.BitSet(mk_tokenSet_6())
 if __name__ == '__main__' :
     import sys
     import antlr
-    from . import ActionLexer
+    import ActionLexer
     
     ### create lexer - shall read from stdin
     try:
         for token in ActionLexer.Lexer():
-            print(token)
+            print token
             
-    except antlr.TokenStreamException as e:
-        print("error: exception caught while lexing: ", e)
+    except antlr.TokenStreamException, e:
+        print "error: exception caught while lexing: ", e
 ### __main__ header action <<< 
