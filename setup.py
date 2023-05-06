@@ -4,7 +4,7 @@ from distutils.core import setup
 
 
 setup(
-    name="stringtemplate3",
+    name="stringtemplate3_python3_runtime",
     version="3.1",
     description="A powerful template engine with strict model-view separation",
     long_description="""
