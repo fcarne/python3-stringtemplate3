@@ -1460,5 +1460,7 @@ class StringTemplate(object):
 # initialize here, because of cyclic imports
 from stringtemplate3.groups import StringTemplateGroup
 StringTemplateGroup.NOT_FOUND_ST = StringTemplate()
+StringTemplate.defaultGroup = StringTemplateGroup(name='defaultGroup', rootDir='.')
+
 ASTExpr.MAP_KEY_VALUE = StringTemplate()
 
