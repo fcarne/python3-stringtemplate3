@@ -1,7 +1,5 @@
 from stringtemplate3 import antlr
-
-from stringtemplate3.language import ASTExpr
-from stringtemplate3.language import ActionEvaluator
+from stringtemplate3.language import ActionEvaluator, ASTExpr
 from stringtemplate3.utils import deprecated
 
 

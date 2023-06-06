@@ -1,10 +1,8 @@
 ### $ANTLR 2.7.7 (2006-11-01): "angle.bracket.template.g" -> "AngleBracketTemplateLexer.py"$
 ### import antlr and other modules ..
-from stringtemplate3 import antlr
-
-
 ### header action >>>
 import stringtemplate3.language.TemplateParser
+from stringtemplate3 import antlr
 from stringtemplate3.language.ChunkToken import ChunkToken
 
 ### header action <<<
@@ -1337,6 +1335,7 @@ _tokenSet_12 = antlr.BitSet(mk_tokenSet_12())
 ### __main__ header action >>>
 if __name__ == "__main__":
     from stringtemplate3 import antlr
+
     from . import AngleBracketTemplateLexer
 
     ### create lexer - shall read from stdin

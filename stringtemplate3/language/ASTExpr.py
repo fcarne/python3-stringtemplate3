@@ -1,13 +1,13 @@
 from io import StringIO
-from stringtemplate3 import antlr
 
-from stringtemplate3.utils import deprecated
-from stringtemplate3.language.Expr import Expr
-from stringtemplate3.language import ActionEvaluator
-from stringtemplate3.language.StringTemplateAST import StringTemplateAST
-from stringtemplate3.language.CatIterator import CatList
-from stringtemplate3.language.FormalArgument import UNKNOWN_ARGS
 import stringtemplate3
+from stringtemplate3 import antlr
+from stringtemplate3.language import ActionEvaluator
+from stringtemplate3.language.CatIterator import CatList
+from stringtemplate3.language.Expr import Expr
+from stringtemplate3.language.FormalArgument import UNKNOWN_ARGS
+from stringtemplate3.language.StringTemplateAST import StringTemplateAST
+from stringtemplate3.utils import deprecated
 
 
 class IllegalStateException(Exception):

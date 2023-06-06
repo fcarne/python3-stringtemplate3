@@ -1,12 +1,11 @@
 ### $ANTLR 2.7.7 (2006-11-01): "eval.g" -> "ActionEvaluator.py"$
 ### import antlr and other modules ..
-from stringtemplate3 import antlr
+from io import StringIO
 
+from stringtemplate3 import antlr
 
 ### header action >>>
 from stringtemplate3.language.CatIterator import CatList
-
-from io import StringIO
 
 
 class NameValuePair:

@@ -2,7 +2,6 @@
 ### import antlr and other modules ..
 from stringtemplate3 import antlr
 
-
 ### header action >>>
 from stringtemplate3.language.StringTemplateToken import StringTemplateToken
 
@@ -763,6 +762,7 @@ _tokenSet_6 = antlr.BitSet(mk_tokenSet_6())
 ### __main__ header action >>>
 if __name__ == "__main__":
     import antlr
+
     from . import ActionLexer
 
     ### create lexer - shall read from stdin

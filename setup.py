@@ -2,7 +2,6 @@
 
 from distutils.core import setup
 
-
 setup(
     name="stringtemplate3",
     version="3.1",

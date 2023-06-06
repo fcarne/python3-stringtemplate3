@@ -2,7 +2,6 @@
 ### import antlr and other modules ..
 from stringtemplate3 import antlr
 
-
 ### header action >>>
 from stringtemplate3.language.ChunkToken import ChunkToken
 
@@ -1348,6 +1347,7 @@ _tokenSet_11 = antlr.BitSet(mk_tokenSet_11())
 ### __main__ header action >>>
 if __name__ == "__main__":
     from stringtemplate3 import antlr
+
     from . import DefaultTemplateLexer
 
     ### create lexer - shall read from stdin

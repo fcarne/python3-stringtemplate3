@@ -27,24 +27,23 @@
 
 import importlib
 import sys
-import traceback
 import time
+import traceback
 from io import StringIO
 
-from . import antlr
-
+from stringtemplate3.errors import DEFAULT_ERROR_LISTENER
+from stringtemplate3.interfaces import StringTemplateGroupInterface
 from stringtemplate3.language import (
     AngleBracketTemplateLexer,
     DefaultTemplateLexer,
     GroupLexer,
     GroupParser,
 )
-
+from stringtemplate3.templates import REGION_IMPLICIT, StringTemplate
 from stringtemplate3.utils import deprecated
-from stringtemplate3.errors import DEFAULT_ERROR_LISTENER
-from stringtemplate3.templates import StringTemplate, REGION_IMPLICIT
 from stringtemplate3.writers import AutoIndentWriter
-from stringtemplate3.interfaces import StringTemplateGroupInterface
+
+from . import antlr
 
 DEFAULT_EXTENSION = ".st"
 

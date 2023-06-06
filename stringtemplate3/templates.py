@@ -27,29 +27,27 @@
 
 import sys
 import traceback
-from io import StringIO
 from copy import copy
+from io import StringIO
 
-
-from . import antlr
-
+import stringtemplate3
 from stringtemplate3.language import (
-    FormalArgument,
     UNKNOWN_ARGS,
-    ChunkToken,
-    ASTExpr,
-    StringTemplateAST,
-    TemplateParser,
     ActionLexer,
     ActionParser,
+    ASTExpr,
+    ChunkToken,
     ConditionalExpr,
+    FormalArgument,
     NewlineRef,
+    StringTemplateAST,
     StringTemplateToken,
+    TemplateParser,
 )
-
-from stringtemplate3.writers import StringTemplateWriter
 from stringtemplate3.utils import deprecated
-import stringtemplate3
+from stringtemplate3.writers import StringTemplateWriter
+
+from . import antlr
 
 
 class STAttributeList(list):

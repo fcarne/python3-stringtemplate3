@@ -27,10 +27,9 @@
 
 from io import StringIO
 
-from stringtemplate3.language import InterfaceLexer, InterfaceParser
-
-from stringtemplate3.utils import deprecated
 from stringtemplate3.errors import DEFAULT_ERROR_LISTENER
+from stringtemplate3.language import InterfaceLexer, InterfaceParser
+from stringtemplate3.utils import deprecated
 
 
 class TemplateDefinition:

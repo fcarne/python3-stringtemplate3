@@ -1,10 +1,8 @@
 ### $ANTLR 2.7.7 (2006-11-01): "action.g" -> "ActionParser.py"$
 ### import antlr and other modules ..
-from stringtemplate3 import antlr
-
-
 ### header action >>>
 import stringtemplate3
+from stringtemplate3 import antlr
 
 ### header action <<<
 ### preamble action>>>

@@ -1,8 +1,10 @@
 ### $ANTLR 2.7.7 (2006-11-01): "interface.g" -> "InterfaceParser.py"$
 ### import antlr and other modules ..
 import sys
-from stringtemplate3 import antlr
+import traceback
 
+from stringtemplate3 import antlr
+from stringtemplate3.language.FormalArgument import FormalArgument
 
 ### header action >>>
 #
@@ -33,11 +35,6 @@ from stringtemplate3 import antlr
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-
-import sys
-import traceback
-
-from stringtemplate3.language.FormalArgument import FormalArgument
 
 ### header action <<<
 ### preamble action>>>

@@ -25,15 +25,15 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import sys
-import os
-import traceback
 import codecs
+import os
+import sys
+import traceback
 
-from stringtemplate3.utils import deprecated
 from stringtemplate3.groups import StringTemplateGroup
 from stringtemplate3.interfaces import StringTemplateGroupInterface
 from stringtemplate3.language import AngleBracketTemplateLexer
+from stringtemplate3.utils import deprecated
 
 
 class StringTemplateGroupLoader:

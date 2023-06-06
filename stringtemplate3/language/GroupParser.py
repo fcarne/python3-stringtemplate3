@@ -1,13 +1,13 @@
 ### $ANTLR 2.7.7 (2006-11-01): "group.g" -> "GroupParser.py"$
 ### import antlr and other modules ..
 import sys
-from stringtemplate3 import antlr
+import traceback
 
+import stringtemplate3
+from stringtemplate3 import antlr
 
 ### header action >>>
 from .ASTExpr import *
-import stringtemplate3
-import traceback
 
 ### header action <<<
 ### preamble action>>>

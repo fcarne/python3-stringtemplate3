@@ -28,13 +28,13 @@ repos:
           - "--in-place"
           - "--expand-star-imports"
 
-  #- repo: local
-  #  hooks:
-  #    - id: isort
-  #      name: isort
-  #      entry: isort --settings-path pyproject.toml
-  #      types: [python]
-  #      language: system
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: isort --settings-path pyproject.toml
+        types: [python]
+        language: system
 
   - repo: local
     hooks:
