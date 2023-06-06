@@ -17,13 +17,13 @@ setup(
     strictly enforces model-view separation unlike other engines.
     """,
     classifiers=[
-    'Development Status :: 5 - Production/Stable',
-    'Intended Audience :: Developers',
-    'License :: OSI Approved :: BSD License',
-    'Operating System :: OS Independent',
-    'Programming Language :: Python',
-    'Topic :: Software Development :: Libraries :: Python Modules',
-    'Topic :: Text Processing',
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Text Processing",
     ],
     author="Terence Parr / Marq Kole / Benjamin Niemann",
     author_email="parrt AT antlr.org / marq.kole AT philips.com / pink@odahoda.de",
@@ -32,5 +32,5 @@ setup(
     url="http://www.stringtemplate.org/",
     license="BSD",
     platform="any",
-    packages=['stringtemplate3', 'stringtemplate3.language'],
-    )
+    packages=["stringtemplate3", "stringtemplate3.language"],
+)

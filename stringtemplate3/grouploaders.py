@@ -1,4 +1,3 @@
-
 # [The "BSD licence"]
 # Copyright (c) 2003-2006 Terence Parr
 # All rights reserved.
@@ -37,7 +36,7 @@ from stringtemplate3.interfaces import StringTemplateGroupInterface
 from stringtemplate3.language import AngleBracketTemplateLexer
 
 
-class StringTemplateGroupLoader(object):
+class StringTemplateGroupLoader:
     """
     When group files derive from another group, we have to know how to
     load that group and its supergroups. This interface also knows how
@@ -53,9 +52,8 @@ class StringTemplateGroupLoader(object):
         Specify the template lexer to use for parsing templates.  If null,
         it assumes angle brackets <...>.
         """
-        
-        raise NotImplementedError
 
+        raise NotImplementedError
 
     def loadInterface(self, interfaceName):
         """
@@ -64,7 +62,7 @@ class StringTemplateGroupLoader(object):
         """
 
         raise NotImplementedError
-    
+
 
 class PathGroupLoader(StringTemplateGroupLoader):
     """
@@ -72,54 +70,49 @@ class PathGroupLoader(StringTemplateGroupLoader):
     specify in the ctor.
     You may specify the char encoding.
     """
-    
+
     def __init__(self, dir=None, errors=None):
         """
         Pass a single dir or multiple dirs separated by colons from which
         to load groups/interfaces.
         """
-        
+
         StringTemplateGroupLoader.__init__(self)
 
         ## List of ':' separated dirs to pull groups from
-        self.dirs = dir.split(':')
+        self.dirs = dir.split(":")
         self.errors = errors
 
         ## How are the files encoded (ascii, UTF8, ...)?
         #  You might want to read UTF8 for example on an ascii machine.
         self.fileCharEncoding = sys.getdefaultencoding()
-        
 
     def loadGroup(self, groupName, superGroup=None, lexer=None):
         if lexer is None:
             lexer = AngleBracketTemplateLexer.Lexer
         try:
-            fr = self.locate(groupName+".stg")
+            fr = self.locate(groupName + ".stg")
             if fr is None:
-                self.error("no such group file "+groupName+".stg")
+                self.error("no such group file " + groupName + ".stg")
                 return None
 
             try:
                 return StringTemplateGroup(
-                    file=fr,
-                    lexer=lexer,
-                    errors=self.errors,
-                    superGroup=superGroup
-                    )
+                    file=fr, lexer=lexer, errors=self.errors, superGroup=superGroup
+                )
             finally:
                 fr.close()
 
-        except IOError as ioe:
-            self.error("can't load group "+groupName, ioe)
+        except OSError as ioe:
+            self.error("can't load group " + groupName, ioe)
 
         return None
 
-
     def loadInterface(self, interfaceName):
         try:
-            fr = self.locate(interfaceName+".sti")
+            fr = self.locate(interfaceName + ".sti")
             if fr is None:
-                self.error("no such interface file "+interfaceName+".sti")
+                self.error("no such interface file " + interfaceName + ".sti")
                 return None
 
             try:
@@ -127,27 +120,25 @@ class PathGroupLoader(StringTemplateGroupLoader):
 
             finally:
                 fr.close()
-                
-        except (IOError, OSError) as ioe:
-            self.error("can't load interface "+interfaceName, ioe)
+
+        except OSError as ioe:
+            self.error("can't load interface " + interfaceName, ioe)
 
         return None
 
-
     def locate(self, name):
         """Look in each directory for the file called 'name'."""
-        
+
         for dir in self.dirs:
             path = os.path.join(dir, name)
             if os.path.isfile(path):
-                fr = open(path, 'r')
+                fr = open(path)
                 # FIXME: something breaks, when stream return unicode
                 if self.fileCharEncoding is not None:
                     fr = codecs.getreader(self.fileCharEncoding)(fr)
                 return fr
 
         return None
-    
 
     @deprecated
     def getFileCharEncoding(self):
@@ -157,13 +148,12 @@ class PathGroupLoader(StringTemplateGroupLoader):
     def setFileCharEncoding(self, fileCharEncoding):
         self.fileCharEncoding = fileCharEncoding
 
-
     def error(self, msg, exc=None):
         if self.errors is not None:
             self.errors.error(msg, exc)
-            
+
         else:
-            sys.stderr.write("StringTemplate: "+msg+"\n")
+            sys.stderr.write("StringTemplate: " + msg + "\n")
             if exc is not None:
                 traceback.print_exc()
 
@@ -181,5 +171,3 @@ class CommonGroupLoader(PathGroupLoader):
         """Look in each directory for the file called 'name'."""
 
         return PathGroupLoader.locate(self, name)
-
-

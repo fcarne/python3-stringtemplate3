@@ -1,4 +1,3 @@
-
 # [The "BSD licence"]
 # Copyright (c) 2003-2006 Terence Parr
 # All rights reserved.
@@ -29,8 +28,9 @@
 import sys
 import traceback
 
+
 ## Lets you specify where errors, warnings go.
-class StringTemplateErrorListener(object):
+class StringTemplateErrorListener:
     def error(self, msg, e):
         raise NotImplementedError
 
@@ -41,16 +41,16 @@ class StringTemplateErrorListener(object):
 class DefaultStringTemplateErrorListener(StringTemplateErrorListener):
     def __init__(self, output=None):
         StringTemplateErrorListener.__init__(self)
-        
+
         self.output = output or sys.stderr
 
     def error(self, msg, exc):
-        self.output.write(msg + '\n')
+        self.output.write(msg + "\n")
         if exc is not None:
             traceback.print_exc(file=self.output)
 
     def warning(self, msg):
-        self.output.write(msg + '\n')
+        self.output.write(msg + "\n")
 
 
 DEFAULT_ERROR_LISTENER = DefaultStringTemplateErrorListener()

@@ -1,5 +1,4 @@
-
-__all__ = ['language']
+__all__ = ["language"]
 
 __version__ = "3.1"
 

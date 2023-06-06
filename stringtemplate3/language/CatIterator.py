@@ -1,13 +1,12 @@
-
 from io import StringIO
+
 
 ## Given a list of lists, return the combined elements one by one.
 #
-class CatList(object):
-
+class CatList:
     def __init__(self, lists):
-	## List of lists to cat together 
-	#
+        ## List of lists to cat together
+        #
         self._lists = lists
 
     def __len__(self):
@@ -18,29 +17,26 @@ class CatList(object):
 
     def lists(self):
         for list_ in self._lists:
-            for item in list_:
-                yield item
+            yield from list_
 
     def __iter__(self):
         for list_ in self._lists:
-            for item in list_:
-                yield item
+            yield from list_
 
-        
     ## The result of asking for the string of a CatList is the list of
     #  items and so this is just the cat'd list of both items.  This
     #  is destructive in that the iterator cursors have moved to the end
     #  after printing.
     def __str__(self):
         buf = StringIO()
-        #buf.write('[')
+        # buf.write('[')
         k = len(self)
         for item in self.lists():
             buf.write(str(item))
             k -= 1
-            #if k:
+            # if k:
             #    buf.write(', ')
-        #buf.write(']')
+        # buf.write(']')
 
         return buf.getvalue()
 

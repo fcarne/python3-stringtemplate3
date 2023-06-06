@@ -1,10 +1,9 @@
-
 from stringtemplate3 import antlr
 
-class StringTemplateAST(antlr.CommonAST):
 
+class StringTemplateAST(antlr.CommonAST):
     def __init__(self, type=None, text=None):
-        super(StringTemplateAST, self).__init__() 
+        super().__init__()
 
         if type is not None:
             self.setType(type)
@@ -12,7 +11,7 @@ class StringTemplateAST(antlr.CommonAST):
         if text is not None:
             self.setText(text)
 
-	# track template for ANONYMOUS blocks
+        # track template for ANONYMOUS blocks
         self.st = None
 
     def getStringTemplate(self):

@@ -4,12 +4,12 @@ import sys
 from stringtemplate3 import antlr
 
 
-### header action >>> 
+### header action >>>
 #
 # [The "BSD licence"]
 # Copyright (c) 2003-2004 Terence Parr
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -20,7 +20,7 @@ from stringtemplate3 import antlr
 # documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 # derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -31,26 +31,27 @@ from stringtemplate3 import antlr
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# 
+#
 
 
 import sys
 import traceback
 
 from stringtemplate3.language.FormalArgument import FormalArgument
-### header action <<< 
+
+### header action <<<
 ### preamble action>>>
 
 ### preamble action <<<
 
-### import antlr.Token 
+### import antlr.Token
 ### >>>The Known Token Types <<<
-SKIP                = antlr.SKIP
-INVALID_TYPE        = antlr.INVALID_TYPE
-EOF_TYPE            = antlr.EOF_TYPE
-EOF                 = antlr.EOF
+SKIP = antlr.SKIP
+INVALID_TYPE = antlr.INVALID_TYPE
+EOF_TYPE = antlr.EOF_TYPE
+EOF = antlr.EOF
 NULL_TREE_LOOKAHEAD = antlr.NULL_TREE_LOOKAHEAD
-MIN_USER_TYPE       = antlr.MIN_USER_TYPE
+MIN_USER_TYPE = antlr.MIN_USER_TYPE
 LITERAL_interface = 4
 ID = 5
 SEMI = 6
@@ -74,73 +75,63 @@ WS = 14
 class Parser(antlr.LLkParser):
     ### user action >>>
     def reportError(self, e):
-       if self.group_:
-           self.group_.error("template group interface parse error", e)
-       else:
-           sys.stderr.write("template group interface parse error: " + str(e) + '\n')
-           traceback.print_exc()
+        if self.group_:
+            self.group_.error("template group interface parse error", e)
+        else:
+            sys.stderr.write("template group interface parse error: " + str(e) + "\n")
+            traceback.print_exc()
+
     ### user action <<<
-    
+
     def __init__(self, *args, **kwargs):
         antlr.LLkParser.__init__(self, *args, **kwargs)
         self.tokenNames = _tokenNames
-        ### __init__ header action >>> 
+        ### __init__ header action >>>
         self.groupI = None
-        ### __init__ header action <<< 
-        
-    def groupInterface(self,
-        groupI
-    ):    
-        
+        ### __init__ header action <<<
+
+    def groupInterface(self, groupI):
         name = None
         self.groupI = groupI
-        try:      ## for error handling
-            pass
+        try:  ## for error handling
             self.match(LITERAL_interface)
             name = self.LT(1)
             self.match(ID)
             groupI.name = name.getText()
             self.match(SEMI)
-            _cnt3= 0
+            _cnt3 = 0
             while True:
-                if (self.LA(1)==ID or self.LA(1)==LITERAL_optional):
-                    pass
+                if self.LA(1) == ID or self.LA(1) == LITERAL_optional:
                     self.template(groupI)
                 else:
                     break
-                
+
                 _cnt3 += 1
             if _cnt3 < 1:
                 raise antlr.NoViableAltException(self.LT(1), self.getFilename())
-        
+
         except antlr.RecognitionException as ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_0)
-        
-    
-    def template(self,
-        groupI
-    ):    
-        
+
+    def template(self, groupI):
         opt = None
         name = None
-        formalArgs = {} # leave blank if no args
+        formalArgs = {}  # leave blank if no args
         templateName = None
-        try:      ## for error handling
-            pass
+        try:  ## for error handling
             la1 = self.LA(1)
             if False:
                 pass
             elif la1 and la1 in [LITERAL_optional]:
-                pass
                 opt = self.LT(1)
                 self.match(LITERAL_optional)
             elif la1 and la1 in [ID]:
                 pass
             else:
-                    raise antlr.NoViableAltException(self.LT(1), self.getFilename())
-                
+                raise antlr.NoViableAltException(self.LT(1), self.getFilename())
+
             name = self.LT(1)
             self.match(ID)
             self.match(LPAREN)
@@ -148,90 +139,92 @@ class Parser(antlr.LLkParser):
             if False:
                 pass
             elif la1 and la1 in [ID]:
-                pass
-                formalArgs=self.args()
+                formalArgs = self.args()
             elif la1 and la1 in [RPAREN]:
                 pass
             else:
-                    raise antlr.NoViableAltException(self.LT(1), self.getFilename())
-                
+                raise antlr.NoViableAltException(self.LT(1), self.getFilename())
+
             self.match(RPAREN)
             self.match(SEMI)
             templateName = name.getText()
             groupI.defineTemplate(templateName, formalArgs, opt != None)
-        
+
         except antlr.RecognitionException as ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_1)
-        
-    
-    def args(self):    
-        args={}
-        
+
+    def args(self):
+        args = {}
+
         a = None
         b = None
-        try:      ## for error handling
-            pass
+        try:  ## for error handling
             a = self.LT(1)
             self.match(ID)
             args[a.getText()] = FormalArgument(a.getText())
             while True:
-                if (self.LA(1)==COMMA):
-                    pass
+                if self.LA(1) == COMMA:
                     self.match(COMMA)
                     b = self.LT(1)
                     self.match(ID)
                     args[b.getText()] = FormalArgument(b.getText())
                 else:
                     break
-                
-        
+
         except antlr.RecognitionException as ex:
             self.reportError(ex)
             self.consume()
             self.consumeUntil(_tokenSet_2)
-        
+
         return args
-    
+
 
 _tokenNames = [
-    "<0>", 
-    "EOF", 
-    "<2>", 
-    "NULL_TREE_LOOKAHEAD", 
-    "\"interface\"", 
-    "ID", 
-    "SEMI", 
-    "\"optional\"", 
-    "LPAREN", 
-    "RPAREN", 
-    "COMMA", 
-    "COLON", 
-    "SL_COMMENT", 
-    "ML_COMMENT", 
-    "WS"
+    "<0>",
+    "EOF",
+    "<2>",
+    "NULL_TREE_LOOKAHEAD",
+    '"interface"',
+    "ID",
+    "SEMI",
+    '"optional"',
+    "LPAREN",
+    "RPAREN",
+    "COMMA",
+    "COLON",
+    "SL_COMMENT",
+    "ML_COMMENT",
+    "WS",
 ]
-    
+
 
 ### generate bit set
-def mk_tokenSet_0(): 
+def mk_tokenSet_0():
     ### var1
-    data = [ 2, 0]
+    data = [2, 0]
     return data
+
+
 _tokenSet_0 = antlr.BitSet(mk_tokenSet_0())
 
-### generate bit set
-def mk_tokenSet_1(): 
-    ### var1
-    data = [ 162, 0]
-    return data
-_tokenSet_1 = antlr.BitSet(mk_tokenSet_1())
 
 ### generate bit set
-def mk_tokenSet_2(): 
+def mk_tokenSet_1():
     ### var1
-    data = [ 512, 0]
+    data = [162, 0]
     return data
+
+
+_tokenSet_1 = antlr.BitSet(mk_tokenSet_1())
+
+
+### generate bit set
+def mk_tokenSet_2():
+    ### var1
+    data = [512, 0]
+    return data
+
+
 _tokenSet_2 = antlr.BitSet(mk_tokenSet_2())
-    

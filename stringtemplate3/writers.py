@@ -1,4 +1,3 @@
-
 # [The "BSD licence"]
 # Copyright (c) 2003-2006 Terence Parr
 # All rights reserved.
@@ -29,7 +28,7 @@
 from stringtemplate3.utils import deprecated
 
 
-class AttributeRenderer(object):
+class AttributeRenderer:
     """
     This interface describes an object that knows how to format or otherwise
     render an object appropriately.  Usually this is used for locale changes
@@ -54,10 +53,10 @@ class AttributeRenderer(object):
         pass
 
 
-class StringTemplateWriter(object):
+class StringTemplateWriter:
     """
     Generic StringTemplate output writer filter.
- 
+
     Literals and the elements of expressions are emitted via write().
     Separators are emitted via writeSeparator() because they must be
     handled specially when wrapping lines (we don't want to wrap
@@ -65,7 +64,7 @@ class StringTemplateWriter(object):
     """
 
     NO_WRAP = -1
-    
+
     def __init__(self):
         pass
 
@@ -78,14 +77,11 @@ class StringTemplateWriter(object):
     def pushAnchorPoint(self):
         raise NotImplementedError
 
-    
     def popAnchorPoint(self):
         raise NotImplementedError
 
-
     def setLineWidth(self, lineWidth):
         raise NotImplementedError
-    
 
     def write(self, str, wrap=None):
         """
@@ -96,23 +92,21 @@ class StringTemplateWriter(object):
 
         raise NotImplementedError
 
-
     def writeWrapSeparator(self, wrap):
         """
         Because we might need to wrap at a non-atomic string boundary
- 	(such as when we wrap in between template applications
- 	 <data:{v|[<v>]}; wrap>) we need to expose the wrap string
- 	writing just like for the separator.
- 	"""
+        (such as when we wrap in between template applications
+         <data:{v|[<v>]}; wrap>) we need to expose the wrap string
+        writing just like for the separator.
+        """
 
         raise NotImplementedError
-
 
     def writeSeparator(self, str):
         """
         Write a separator.  Same as write() except that a \n cannot
         be inserted before emitting a separator.
- 	"""
+        """
 
         raise NotImplementedError
 
@@ -129,7 +123,7 @@ class AutoIndentWriter(StringTemplateWriter):
     Anchors are char positions (tabs won't work) that indicate where all
     future wraps should justify to.  The wrap position is actually the
     larger of either the last anchor or the indentation level.
-    
+
     This is a filter on a Writer.
 
     It may be screwed up for '\r' '\n' on PC's.
@@ -138,8 +132,8 @@ class AutoIndentWriter(StringTemplateWriter):
     def __init__(self, out):
         StringTemplateWriter.__init__(self)
 
-	## stack of indents
-        self.indents = [None] # start with no indent
+        ## stack of indents
+        self.indents = [None]  # start with no indent
 
         ## Stack of integer anchors (char positions in line)
         self.anchors = []
@@ -156,12 +150,10 @@ class AutoIndentWriter(StringTemplateWriter):
 
         self.charPositionOfStartOfExpr = 0
 
-
     @deprecated
     def setLineWidth(self, lineWidth):
         self.lineWidth = lineWidth
 
-        
     def pushIndentation(self, indent):
         """
         Push even blank (null) indents as they are like scopes; must
@@ -170,22 +162,17 @@ class AutoIndentWriter(StringTemplateWriter):
 
         self.indents.append(indent)
 
-
     def popIndentation(self):
         return self.indents.pop(-1)
-
 
     def getIndentationWidth(self):
         return sum(len(ind) for ind in self.indents if ind is not None)
 
-
     def pushAnchorPoint(self):
         self.anchors.append(self.charPosition)
 
-
     def popAnchorPoint(self):
         self.anchors.pop(-1)
-
 
     def write(self, text, wrap=None):
         """
@@ -198,15 +185,15 @@ class AutoIndentWriter(StringTemplateWriter):
         """
 
         assert isinstance(text, str), repr(text)
-        
+
         n = 0
         if wrap is not None:
             n += self.writeWrapSeparator(wrap)
-            
+
         for c in text:
-            if c == '\n':
+            if c == "\n":
                 self.atStartOfLine = True
-                self.charPosition = -1 # set so the write below sets to 0
+                self.charPosition = -1  # set so the write below sets to 0
 
             else:
                 if self.atStartOfLine:
@@ -218,33 +205,34 @@ class AutoIndentWriter(StringTemplateWriter):
             self.charPosition += 1
 
         return n
-        
 
     def writeWrapSeparator(self, wrap):
         n = 0
-        
+
         # if want wrap and not already at start of line (last char was \n)
         # and we have hit or exceeded the threshold
-        if ( self.lineWidth != self.NO_WRAP and
-             not self.atStartOfLine and
-             self.charPosition >= self.lineWidth ):
+        if (
+            self.lineWidth != self.NO_WRAP
+            and not self.atStartOfLine
+            and self.charPosition >= self.lineWidth
+        ):
             # ok to wrap
             # Walk wrap string and look for A\nB.  Spit out A\n
             # then spit indent or anchor, whichever is larger
             # then spit out B
             for c in wrap:
-                if c == '\n':
+                if c == "\n":
                     n += 1
                     self.out.write(c)
-                    #atStartOfLine = true;
+                    # atStartOfLine = true;
                     self.charPosition = 0
-                    
+
                     indentWidth = self.getIndentationWidth()
                     try:
                         lastAnchor = self.anchors[-1]
-                    except IndexError: # no anchors saved
+                    except IndexError:  # no anchors saved
                         lastAnchor = 0
-                        
+
                     if lastAnchor > indentWidth:
                         # use anchor not indentation
                         n += self.indent(lastAnchor)
@@ -255,7 +243,7 @@ class AutoIndentWriter(StringTemplateWriter):
 
                     # continue writing any chars out
 
-                else: # write A or B part
+                else:  # write A or B part
                     n += 1
                     self.out.write(c)
                     self.charPosition += 1
@@ -264,7 +252,6 @@ class AutoIndentWriter(StringTemplateWriter):
 
     def writeSeparator(self, text):
         return self.write(text)
-
 
     def indent(self, spaces=None):
         if spaces is None:
@@ -278,7 +265,7 @@ class AutoIndentWriter(StringTemplateWriter):
             return n
 
         else:
-            self.out.write(' ' * spaces)
+            self.out.write(" " * spaces)
             self.charPosition += spaces
             return spaces
 
@@ -286,12 +273,9 @@ class AutoIndentWriter(StringTemplateWriter):
 ## Just pass through the text
 #
 class NoIndentWriter(AutoIndentWriter):
-
     def __init__(self, out):
-        super(NoIndentWriter, self).__init__(out)
-
+        super().__init__(out)
 
     def write(self, str, wrap=None):
         self.out.write(str)
         return len(str)
-

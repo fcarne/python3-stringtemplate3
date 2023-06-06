@@ -3,12 +3,12 @@
 from stringtemplate3 import antlr
 
 
-### header action >>> 
+### header action >>>
 #
 # [The "BSD licence"]
 # Copyright (c) 2003-2004 Terence Parr
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -19,7 +19,7 @@ from stringtemplate3 import antlr
 # documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 # derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -30,30 +30,29 @@ from stringtemplate3 import antlr
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# 
+#
 
 
-import sys
+### header action <<<
+### preamble action >>>
 
-### header action <<< 
-### preamble action >>> 
-
-### preamble action <<< 
+### preamble action <<<
 ### >>>The Literals<<<
 literals = {}
 literals["interface"] = 4
 literals["optional"] = 7
 
 
-### import antlr.Token 
+### import antlr.Token
 from stringtemplate3.antlr import Token
+
 ### >>>The Known Token Types <<<
-SKIP                = antlr.SKIP
-INVALID_TYPE        = antlr.INVALID_TYPE
-EOF_TYPE            = antlr.EOF_TYPE
-EOF                 = antlr.EOF
+SKIP = antlr.SKIP
+INVALID_TYPE = antlr.INVALID_TYPE
+EOF_TYPE = antlr.EOF_TYPE
+EOF = antlr.EOF
 NULL_TREE_LOOKAHEAD = antlr.NULL_TREE_LOOKAHEAD
-MIN_USER_TYPE       = antlr.MIN_USER_TYPE
+MIN_USER_TYPE = antlr.MIN_USER_TYPE
 LITERAL_interface = 4
 ID = 5
 SEMI = 6
@@ -66,70 +65,66 @@ SL_COMMENT = 12
 ML_COMMENT = 13
 WS = 14
 
-class Lexer(antlr.CharScanner) :
+
+class Lexer(antlr.CharScanner):
     ### user action >>>
     ### user action <<<
-    def __init__(self, *argv, **kwargs) :
+    def __init__(self, *argv, **kwargs):
         antlr.CharScanner.__init__(self, *argv, **kwargs)
         self.caseSensitiveLiterals = True
         self.setCaseSensitive(True)
         self.literals = literals
-    
+
     def nextToken(self):
         while True:
-            try: ### try again ..
+            try:  ### try again ..
                 while True:
                     _token = None
                     _ttype = INVALID_TYPE
                     self.resetText()
-                    try: ## for char stream error handling
-                        try: ##for lexical error handling
+                    try:  ## for char stream error handling
+                        try:  ##for lexical error handling
                             la1 = self.LA(1)
                             if False:
                                 pass
-                            elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz':
-                                pass
+                            elif (
+                                la1
+                                and la1
+                                in "ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
+                            ):
                                 self.mID(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '(':
-                                pass
+                            elif la1 and la1 in "(":
                                 self.mLPAREN(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ')':
-                                pass
+                            elif la1 and la1 in ")":
                                 self.mRPAREN(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ',':
-                                pass
+                            elif la1 and la1 in ",":
                                 self.mCOMMA(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ';':
-                                pass
+                            elif la1 and la1 in ";":
                                 self.mSEMI(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in ':':
-                                pass
+                            elif la1 and la1 in ":":
                                 self.mCOLON(True)
                                 theRetToken = self._returnToken
-                            elif la1 and la1 in '\t\n\u000c\r ':
-                                pass
+                            elif la1 and la1 in "\t\n\u000c\r ":
                                 self.mWS(True)
                                 theRetToken = self._returnToken
                             else:
-                                if (self.LA(1)=='/') and (self.LA(2)=='/'):
-                                    pass
+                                if (self.LA(1) == "/") and (self.LA(2) == "/"):
                                     self.mSL_COMMENT(True)
                                     theRetToken = self._returnToken
-                                elif (self.LA(1)=='/') and (self.LA(2)=='*'):
-                                    pass
+                                elif (self.LA(1) == "/") and (self.LA(2) == "*"):
                                     self.mML_COMMENT(True)
                                     theRetToken = self._returnToken
                                 else:
                                     self.default(self.LA(1))
-                                
+
                             if not self._returnToken:
-                                raise antlr.TryAgain ### found SKIP token
-                            ### option { testLiterals=true } 
+                                raise antlr.TryAgain  ### found SKIP token
+                            ### option { testLiterals=true }
                             self.testForLiteral(self._returnToken)
                             ### return token to caller
                             return self._returnToken
@@ -144,244 +139,220 @@ class Lexer(antlr.CharScanner) :
                             raise antlr.TokenStreamException(str(cse))
             except antlr.TryAgain:
                 pass
-        
-    def mID(self, _createToken):    
+
+    def mID(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = ID
         _saveIndex = 0
-        pass
         la1 = self.LA(1)
         if False:
             pass
-        elif la1 and la1 in 'abcdefghijklmnopqrstuvwxyz':
-            pass
-            self.matchRange('a', 'z')
-        elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-            pass
-            self.matchRange('A', 'Z')
-        elif la1 and la1 in '_':
-            pass
-            self.match('_')
+        elif la1 and la1 in "abcdefghijklmnopqrstuvwxyz":
+            self.matchRange("a", "z")
+        elif la1 and la1 in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            self.matchRange("A", "Z")
+        elif la1 and la1 in "_":
+            self.match("_")
         else:
-                self.raise_NoViableAlt(self.LA(1))
-            
+            self.raise_NoViableAlt(self.LA(1))
+
         while True:
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in 'abcdefghijklmnopqrstuvwxyz':
-                pass
-                self.matchRange('a', 'z')
-            elif la1 and la1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                pass
-                self.matchRange('A', 'Z')
-            elif la1 and la1 in '0123456789':
-                pass
-                self.matchRange('0', '9')
-            elif la1 and la1 in '-':
-                pass
-                self.match('-')
-            elif la1 and la1 in '_':
-                pass
-                self.match('_')
+            elif la1 and la1 in "abcdefghijklmnopqrstuvwxyz":
+                self.matchRange("a", "z")
+            elif la1 and la1 in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+                self.matchRange("A", "Z")
+            elif la1 and la1 in "0123456789":
+                self.matchRange("0", "9")
+            elif la1 and la1 in "-":
+                self.match("-")
+            elif la1 and la1 in "_":
+                self.match("_")
             else:
-                    break
-                
+                break
+
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mLPAREN(self, _createToken):    
+
+    def mLPAREN(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = LPAREN
         _saveIndex = 0
-        pass
-        self.match('(')
+        self.match("(")
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mRPAREN(self, _createToken):    
+
+    def mRPAREN(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = RPAREN
         _saveIndex = 0
-        pass
-        self.match(')')
+        self.match(")")
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mCOMMA(self, _createToken):    
+
+    def mCOMMA(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = COMMA
         _saveIndex = 0
-        pass
-        self.match(',')
+        self.match(",")
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mSEMI(self, _createToken):    
+
+    def mSEMI(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = SEMI
         _saveIndex = 0
-        pass
-        self.match(';')
+        self.match(";")
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mCOLON(self, _createToken):    
+
+    def mCOLON(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = COLON
         _saveIndex = 0
-        pass
-        self.match(':')
+        self.match(":")
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mSL_COMMENT(self, _createToken):    
+
+    def mSL_COMMENT(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = SL_COMMENT
         _saveIndex = 0
-        pass
         self.match("//")
         while True:
-            if (_tokenSet_0.member(self.LA(1))):
-                pass
+            if _tokenSet_0.member(self.LA(1)):
                 self.match(_tokenSet_0)
             else:
                 break
-            
-        if (self.LA(1)=='\n' or self.LA(1)=='\r'):
-            pass
+
+        if self.LA(1) == "\n" or self.LA(1) == "\r":
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in '\r':
-                pass
-                self.match('\r')
-            elif la1 and la1 in '\n':
+            elif la1 and la1 in "\r":
+                self.match("\r")
+            elif la1 and la1 in "\n":
                 pass
             else:
-                    self.raise_NoViableAlt(self.LA(1))
-                
-            self.match('\n')
-        else: ## <m4>
-                pass
-            
-        _ttype = Token.SKIP; 
-        self.newline();
+                self.raise_NoViableAlt(self.LA(1))
+
+            self.match("\n")
+        else:  ## <m4>
+            pass
+
+        _ttype = Token.SKIP
+        self.newline()
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mML_COMMENT(self, _createToken):    
+
+    def mML_COMMENT(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = ML_COMMENT
         _saveIndex = 0
-        pass
         self.match("/*")
         while True:
             ###  nongreedy exit test
-            if ((self.LA(1)=='*') and (self.LA(2)=='/')):
+            if (self.LA(1) == "*") and (self.LA(2) == "/"):
                 break
-            if (self.LA(1)=='\n' or self.LA(1)=='\r') and ((self.LA(2) >= '\u0000' and self.LA(2) <= '\ufffe')):
-                pass
+            if (self.LA(1) == "\n" or self.LA(1) == "\r") and (
+                self.LA(2) >= "\u0000" and self.LA(2) <= "\ufffe"
+            ):
                 la1 = self.LA(1)
                 if False:
                     pass
-                elif la1 and la1 in '\r':
-                    pass
-                    self.match('\r')
-                elif la1 and la1 in '\n':
+                elif la1 and la1 in "\r":
+                    self.match("\r")
+                elif la1 and la1 in "\n":
                     pass
                 else:
-                        self.raise_NoViableAlt(self.LA(1))
-                    
-                self.match('\n')
-                self.newline();
-            elif ((self.LA(1) >= '\u0000' and self.LA(1) <= '\ufffe')) and ((self.LA(2) >= '\u0000' and self.LA(2) <= '\ufffe')):
-                pass
+                    self.raise_NoViableAlt(self.LA(1))
+
+                self.match("\n")
+                self.newline()
+            elif (self.LA(1) >= "\u0000" and self.LA(1) <= "\ufffe") and (
+                self.LA(2) >= "\u0000" and self.LA(2) <= "\ufffe"
+            ):
                 self.matchNot(antlr.EOF_CHAR)
             else:
                 break
-            
+
         self.match("*/")
-        _ttype = Token.SKIP;
+        _ttype = Token.SKIP
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    def mWS(self, _createToken):    
+
+    def mWS(self, _createToken):
         _ttype = 0
         _token = None
         _begin = self.text.length()
         _ttype = WS
         _saveIndex = 0
-        pass
-        _cnt32= 0
+        _cnt32 = 0
         while True:
             la1 = self.LA(1)
             if False:
                 pass
-            elif la1 and la1 in ' ':
-                pass
-                self.match(' ')
-            elif la1 and la1 in '\t':
-                pass
-                self.match('\t')
-            elif la1 and la1 in '\u000c':
-                pass
-                self.match('\f')
-            elif la1 and la1 in '\n\r':
-                pass
+            elif la1 and la1 in " ":
+                self.match(" ")
+            elif la1 and la1 in "\t":
+                self.match("\t")
+            elif la1 and la1 in "\u000c":
+                self.match("\f")
+            elif la1 and la1 in "\n\r":
                 la1 = self.LA(1)
                 if False:
                     pass
-                elif la1 and la1 in '\r':
-                    pass
-                    self.match('\r')
-                elif la1 and la1 in '\n':
+                elif la1 and la1 in "\r":
+                    self.match("\r")
+                elif la1 and la1 in "\n":
                     pass
                 else:
-                        self.raise_NoViableAlt(self.LA(1))
-                    
-                self.match('\n')
-                self.newline();
+                    self.raise_NoViableAlt(self.LA(1))
+
+                self.match("\n")
+                self.newline()
             else:
-                    break
-                
+                break
+
             _cnt32 += 1
         if _cnt32 < 1:
             self.raise_NoViableAlt(self.LA(1))
-        _ttype = Token.SKIP;
+        _ttype = Token.SKIP
         self.set_return_token(_createToken, _token, _ttype, _begin)
-    
-    
+
 
 ### generate bit set
-def mk_tokenSet_0(): 
-    data = [0] * 2048 ### init list
-    data[0] =-9217
+def mk_tokenSet_0():
+    data = [0] * 2048  ### init list
+    data[0] = -9217
     for x in range(1, 1023):
         data[x] = -1
-    data[1023] =9223372036854775807
+    data[1023] = 9223372036854775807
     return data
+
+
 _tokenSet_0 = antlr.BitSet(mk_tokenSet_0())
-    
-### __main__ header action >>> 
-if __name__ == '__main__' :
-    import sys
+
+### __main__ header action >>>
+if __name__ == "__main__":
     from stringtemplate3 import antlr
     from . import InterfaceLexer
-    
+
     ### create lexer - shall read from stdin
     try:
         for token in InterfaceLexer.Lexer():
             print(token)
-            
+
     except antlr.TokenStreamException as e:
         print("error: exception caught while lexing: ", e)
-### __main__ header action <<< 
+### __main__ header action <<<
